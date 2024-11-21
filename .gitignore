@@ -76,3 +76,7 @@ $RECYCLE.BIN/
 # Rider IDE auto-generated files
 .idea/
 *.sln.iml
+
+.idea/
+obj/
+bin/
