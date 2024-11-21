@@ -1,34 +1,78 @@
-# Common IntelliJ Platform excludes
+# Ignore build outputs
+bin/
+obj/
 
-# User specific
-**/.idea/**/workspace.xml
-**/.idea/**/tasks.xml
-**/.idea/shelf/*
-**/.idea/dictionaries
-**/.idea/httpRequests/
+# Rider specific files
+.idea/
+*.iml
+.idea_modules/
 
-# Sensitive or high-churn files
-**/.idea/**/dataSources/
-**/.idea/**/dataSources.ids
-**/.idea/**/dataSources.xml
-**/.idea/**/dataSources.local.xml
-**/.idea/**/sqlDataSources.xml
-**/.idea/**/dynamic.xml
+# User-specific Rider files
+.idea/.idea-name
 
-# Rider
-# Rider auto-generates .iml files, and contentModel.xml
-**/.idea/**/*.iml
-**/.idea/**/contentModel.xml
-**/.idea/**/modules.xml
+# Rider library files
+.idea/libraries/
 
-*.suo
-*.user
-.vs/
-[Bb]in/
-[Oo]bj/
-_UpgradeReport_Files/
-[Pp]ackages/
+# Rider modules and configs
+.idea/modules.xml
+.idea/.gitignore
 
+# Logs and temporary files
+.idea/.name
+.idea/workspace.xml
+.idea/workspace-*.xml
+.idea/dictionaries/
+.idea/vcs.xml
+.idea/compiler.xml
+.idea/encodings.xml
+.idea/misc.xml
+
+# Database configs
+.idea/dataSources/
+.idea/dataSources-*.xml
+.idea/sqlDataSources.xml
+.idea/sqlDataSources-*.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+
+# File-based indexing
+.idea/shelf/
+.idea/java/.*
+.idea/workspaceStorage/
+.idea/httpRequests/
+
+# Ignore system-specific files
+*.DS_Store
+*.swp
+*.swo
+*.tmp
+*.bak
+*.log
+
+# OS-specific files
 Thumbs.db
+ehthumbs.db
 Desktop.ini
-.DS_Store
+$RECYCLE.BIN/
+
+# Exclude build artifacts
+*.dll
+*.exe
+*.so
+*.dylib
+*.class
+*.jar
+*.pyc
+*.pyo
+*.pdb
+*.mdb
+*.ilk
+*.idb
+*.ds_store
+*.ipch
+*.tlog
+*.lastbuildstate
+
+# Rider IDE auto-generated files
+.idea/
+*.sln.iml
