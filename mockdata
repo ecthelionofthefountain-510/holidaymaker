@@ -75,3 +75,16 @@ VALUES
 (8, 18, '2024-12-12', '2024-12-14', 3300),
 (9, 19, '2024-12-20', '2024-12-23', 3900),
 (10, 20, '2024-12-28', '2024-12-30', 2800);
+
+INSERT INTO Location (country, city, adress)
+VALUES
+('Maldives', 'Male', 'Coral Reef Street 1'),
+('Iceland', 'Reykjavik', 'Aurora Borealis Way 12'),
+('Japan', 'Kyoto', 'Bamboo Forest Path 8'),
+('New Zealand', 'Queenstown', 'Adventure Lane 3'),
+('Peru', 'Cusco', 'Inca Trail Base 7'),
+('Madagascar', 'Antananarivo', 'Baobab Avenue 15'),
+('Italy', 'Venice', 'Canal Grande 23'),
+('Chile', 'Easter Island', 'Moai View Road 9'),
+('Australia', 'Sydney', 'Opera House Square 5'),
+('South Africa', 'Cape Town', 'Table Mountain Road 18');
