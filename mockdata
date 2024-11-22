@@ -97,5 +97,16 @@ VALUES
 (9, 19, '2024-12-20', '2024-12-23', 3900),
 (10, 20, '2024-12-28', '2024-12-30', 2800);
 
-
+INSERT INTO Hotels (name, location_id, accomodations_count, distance_to_beach, distance_to_center, rating)
+VALUES
+('The Coral Retreat', 1, 6, 50, 200, 4.7), -- Maldives
+('Northern Lights Lodge', 2, 8, 300, 150, 4.9), -- Iceland
+('Zen Bamboo Haven', 3, 10, 500, 100, 4.8), -- Japan
+('Adventure’s Rest', 4, 5, 1000, 300, 4.6), -- New Zealand
+('Inca Trail Lodge', 5, 7, 800, 400, 4.5), -- Peru
+('Baobab Breeze Lodge', 6, 4, 300, 1000, 3.6), -- Madagascar
+('Sinking Gondola Inn', 7, 6, 50, 200, 3.5), -- Italy
+('Moai Shadows Hotel', 8, 5, 1500, 500, 3.7), -- Chile
+('Kangaroo Plains Retreat', 9, 3, 1000, 800, 3.8), -- Australia
+('Foggy Table Cabin', 10, 4, 2000, 1200, 3.9); -- South Africa
 
