@@ -1,0 +1,45 @@
+
+--vilka hotell ligger inom 500meter från stranden
+SELECT name, distance_to_beach
+FROM Hotels
+WHERE distance_to_beach <= 500;
+
+
+
+
+-- för att se alla som har bokat boende i december
+SELECT firstname, lastname, start_date, end_date
+FROM customers
+JOIN Bookings ON customers.id = Bookings.customer_id
+WHERE start_date BETWEEN '2024-12-01' AND '2024-12-31';
+
+
+
+-- hur många boende har varje hotell och vad har dom för betyg
+SELECT name, accomodations_count, rating
+FROM hotels;
+
+
+-- alla hotel som har en resturant och bara för vuxna
+SELECT name, accomodations_count, adults_only, restaurant
+FROM hotels
+JOIN additional_choices ON hotels.id = additional_choices.id
+WHERE adults_only = true AND restaurant = true;
+
+
+
+
+--hitta hotell från lägsta pris
+    SELECT hotels.name, bookings.booking_price
+    FROM hotels
+    JOIN bookings ON hotels.id = bookings.id
+    ORDER BY booking_price ASC;
+-- ASC sorterar resultaten i stigande ordning
+
+
+
+
+--visa alla hotell med över 4 i betyg
+SELECT name, rating
+FROM Hotels
+WHERE rating >= 4;
