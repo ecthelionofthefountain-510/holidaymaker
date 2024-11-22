@@ -88,3 +88,11 @@ VALUES
 ('Chile', 'Easter Island', 'Moai View Road 9'),
 ('Australia', 'Sydney', 'Opera House Square 5'),
 ('South Africa', 'Cape Town', 'Table Mountain Road 18');
+
+INSERT INTO Additional_choices (pool, entertainment, childrens_club, adults_only, restaurant, half_board, full_board)
+VALUES
+(true, false, false, false, true, true, false), -- Id 1
+(false, true, true, false, false, false, false), -- Id 2
+(true, true, true, false, true, true, true), -- Id 3
+(false, false, false, true, true, false, true), -- Id 4
+(true, true, false, false, true, false, false); -- Id 5
