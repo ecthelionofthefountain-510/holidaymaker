@@ -166,3 +166,63 @@ VALUES
 ('Moai Shadows Hotel', 8, 8, 5, 1500, 500, 3.7),
 ('Kangaroo Plains Retreat', 9, 9, 3, 1000, 800, 3.8),
 ('Foggy Table Cabin', 10, 10, 4, 2000, 1200, 3.9);
+
+
+
+NYA LOCATIONS!!!
+
+INSERT INTO Locations (country, city, adress)
+VALUES
+-- Fiktiva platser
+('Narnia', 'Cair Paravel', 'Aslan Avenue 1'),
+('Middle Earth', 'Rivendell', 'Elven Path 7'),
+('Westeros', 'Kings Landing', 'Iron Throne 5'),
+('Hogwarts', 'Hogsmeade', 'Butterbeer Alley 12'),
+('Atlantis', 'Poseidons Dome', 'Coral Way 8'),
+('Pandora', 'Omaticaya Forest', 'Tree of Souls 3'),
+('The Shire', 'Hobbiton', 'Bag End 1'),
+('Camelot', 'Arthurs Court', 'Excalibur Lane 10'),
+('Neverland', 'Mermaid Lagoon', 'Pirate Cove 4'),
+('Valhalla', 'Odins Hall', 'Asgard Avenue 9');
+
+INSERT INTO Hotels (name, location_id, about_id, accommodations_count, distance_to_beach, distance_to_center, rating)
+VALUES
+-- Hotell i Narnia
+('The Lions Den', 1, 1, 15, 500, 300, 4.9),
+('Cair Paravel Retreat', 1, 2, 12, 800, 200, 4.8),
+
+-- Hotell i Middle Earth
+('Rivendell Lodge', 2, 3, 20, 1000, 400, 4.7),
+('Elven Haven', 2, 4, 18, 1500, 350, 4.6),
+
+-- Hotell i Westeros
+('Iron Throne Suites', 3, 5, 25, 50, 500, 4.5),
+('Red Keep Retreat', 3, 6, 22, 300, 600, 4.4),
+
+-- Hotell i Hogwarts
+('Hogsmeade Hideaway', 4, 7, 10, 700, 150, 4.9),
+('Wizards Haven', 4, 8, 8, 900, 200, 4.8),
+
+-- Hotell i Atlantis
+('Poseidons Palace', 5, 9, 30, 50, 100, 5.0),
+('Coral Reef Retreat', 5, 10, 25, 150, 200, 4.9),
+
+-- Hotell i Pandora
+('Omaticaya Escape', 6, 11, 12, 1200, 400, 4.7),
+('Tree of Souls Lodge', 6, 12, 10, 1400, 300, 4.8),
+
+-- Hotell i The Shire
+('Bag End Inn', 7, 13, 8, 800, 100, 4.9),
+('Hobbit Hole Retreat', 7, 14, 6, 500, 150, 4.8),
+
+-- Hotell i Camelot
+('Excalibur Inn', 8, 15, 20, 600, 300, 4.6),
+('Arthurs Court Retreat', 8, 16, 15, 700, 200, 4.7),
+
+-- Hotell i Neverland
+('Pirate Cove Suites', 9, 17, 18, 50, 250, 4.5),
+('Mermaid Lagoon Resort', 9, 18, 15, 100, 300, 4.6),
+
+-- Hotell i Valhalla
+('Odins Hall', 10, 19, 30, 50, 50, 5.0),
+('Asgard Escape', 10, 20, 25, 200, 150, 4.9);
