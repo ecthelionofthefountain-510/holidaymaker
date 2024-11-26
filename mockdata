@@ -1,4 +1,4 @@
-INSERT INTO Location (country, city, adress)
+INSERT INTO Locations (country, city, adress)
 VALUES
 ('Maldives', 'Male', 'Coral Reef Street 1'),
 ('Iceland', 'Reykjavik', 'Aurora Borealis Way 12'),
@@ -24,7 +24,7 @@ VALUES
 (TRUE, TRUE, FALSE, FALSE, TRUE), -- Kangaroo Plains Retreat
 (TRUE, FALSE, FALSE, FALSE, TRUE); -- Foggy Table Cabin
 
-INSERT INTO additional_choices (hotels_id, half_board, full_board, extra_bed)
+INSERT INTO Additional_choices (hotels_id, half_board, full_board, extra_bed)
 VALUES
 (1, TRUE, FALSE, TRUE),  -- Hotel 1: The Coral Retreat
 (2, FALSE, TRUE, FALSE), -- Hotel 2: Northern Lights Lodge
