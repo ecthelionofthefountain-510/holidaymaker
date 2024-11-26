@@ -1,0 +1,129 @@
+-- auto-generated definition
+create table about
+(
+    id             bigserial
+        primary key,
+    pool           boolean default false,
+    entertainment  boolean default false,
+    childrens_club boolean default false,
+    adults_only    boolean default false,
+    restaurant     boolean default false
+);
+
+alter table about
+    owner to postgres;
+
+-- auto-generated definition
+create table accomodations
+(
+    id             bigserial
+        primary key,
+    hotel_id       bigint
+        constraint fk_accomodations_hotel
+            references hotels
+            on delete cascade,
+    number_of_beds integer          not null,
+    price          double precision not null
+);
+
+alter table accomodations
+    owner to postgres;
+
+-- auto-generated definition
+create table additional_choices
+(
+    id         bigserial
+        primary key,
+    hotels_id  bigint
+        constraint fk_additional_choices_hotel
+            references hotels
+            on delete cascade,
+    half_board boolean default false,
+    full_board boolean default false,
+    extra_bed  boolean default false
+);
+
+alter table additional_choices
+    owner to postgres;
+
+-- auto-generated definition
+create table bookings
+(
+    id                    bigserial
+        primary key,
+    customer_id           bigint
+        constraint fk_bookings_customer
+            references customers
+            on delete cascade,
+    accomodations_id      bigint
+        constraint fk_bookings_accomodations
+            references accomodations
+            on delete cascade,
+    additional_choices_id bigint
+        constraint fk_bookings_additional_choices
+            references additional_choices
+            on delete set null,
+    start_date            timestamp not null,
+    end_date              timestamp not null,
+    is_available          boolean default true,
+    booking_price         bigint    not null
+);
+
+alter table bookings
+    owner to postgres;
+
+-- auto-generated definition
+create table customers
+(
+    id            bigserial
+        primary key,
+    firstname     varchar(100) not null,
+    lastname      varchar(100) not null,
+    email         varchar(255) not null
+        unique,
+    phone_number  varchar(20),
+    date_of_birth date
+);
+
+alter table customers
+    owner to postgres;
+
+-- auto-generated definition
+create table hotels
+(
+    id                  bigserial
+        primary key,
+    name                varchar(100) not null,
+    location_id         bigint
+        constraint fk_hotels_location
+            references locations
+            on delete cascade,
+    about_id            bigint
+        constraint fk_hotels_about
+            references about
+            on delete cascade,
+    accomodations_count integer,
+    distance_to_beach   integer,
+    distance_to_center  integer,
+    rating              double precision
+);
+
+alter table hotels
+    owner to postgres;
+
+-- auto-generated definition
+create table locations
+(
+    id      bigint default nextval('location_id_seq'::regclass) not null
+        constraint location_pkey
+            primary key,
+    country varchar(100)                                        not null,
+    city    varchar(100)                                        not null,
+    adress  varchar(255)                                        not null,
+    constraint unique_location
+        unique (country, city, adress)
+);
+
+alter table locations
+    owner to postgres;
+
