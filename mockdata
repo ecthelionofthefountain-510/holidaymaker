@@ -24,13 +24,13 @@ VALUES
 (TRUE, TRUE, FALSE, FALSE, TRUE), -- Kangaroo Plains Retreat
 (TRUE, FALSE, FALSE, FALSE, TRUE); -- Foggy Table Cabin
 
-INSERT INTO Additional_choices (entertainment, childrens_club, adults_only, restaurant, half_board, full_board)
+INSERT INTO Additional_choices (childrens_club, adults_only, restaurant, half_board, full_board)
 VALUES
-(false, false, false, true, true, false), -- Id 1
-(true, true, false, false, false, false), -- Id 2
-(true, true, false, true, true, true), -- Id 3
-(false, false, true, true, false, true), -- Id 4
-(true, false, false, true, false, false); -- Id 5
+(false, false, true, true, false), -- Id 1
+(true, false, false, false, false), -- Id 2
+(true, false, true, true, true), -- Id 3
+(false, true, true, false, true), -- Id 4
+(false, false, true, false, false); -- Id 5
 
 INSERT INTO Accomodations (hotel_id, number_of_beds, price)
 VALUES
