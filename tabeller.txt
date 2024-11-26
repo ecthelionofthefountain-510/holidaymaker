@@ -61,15 +61,21 @@ CREATE TABLE Additional_choices (
     extra_bed BOOLEAN DEFAULT FALSE
 );
 
+
+1. Lägg till foreign keys för Hotels
 ALTER TABLE Hotels 
 ADD CONSTRAINT fk_hotels_location FOREIGN KEY (location_id) REFERENCES Location(id) ON DELETE CASCADE;
 
 ALTER TABLE Hotels 
 ADD CONSTRAINT fk_hotels_about FOREIGN KEY (about_id) REFERENCES About(id) ON DELETE CASCADE;
 
+
+2. Lägg till foreign keys för Accomodations
 ALTER TABLE Accomodations 
 ADD CONSTRAINT fk_accomodations_hotel FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE;
 
+
+3. Lägg till foreign keys för Bookings
 ALTER TABLE Bookings 
 ADD CONSTRAINT fk_bookings_customer FOREIGN KEY (customer_id) REFERENCES Customers(id) ON DELETE CASCADE;
 
@@ -79,6 +85,8 @@ ADD CONSTRAINT fk_bookings_accomodations FOREIGN KEY (accomodations_id) REFERENC
 ALTER TABLE Bookings 
 ADD CONSTRAINT fk_bookings_additional_choices FOREIGN KEY (additional_choices_id) REFERENCES additional_choices(id) ON DELETE SET NULL;
 
-ALTER TABLE additional_choices 
+
+4. Lägg till foreign keys för Additional_choices
+ALTER TABLE Additional_choices 
 ADD CONSTRAINT fk_additional_choices_hotel FOREIGN KEY (hotels_id) REFERENCES Hotels(id) ON DELETE CASCADE;
 
