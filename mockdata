@@ -24,13 +24,18 @@ VALUES
 (TRUE, TRUE, FALSE, FALSE, TRUE), -- Kangaroo Plains Retreat
 (TRUE, FALSE, FALSE, FALSE, TRUE); -- Foggy Table Cabin
 
-INSERT INTO Additional_choices (childrens_club, adults_only, restaurant, half_board, full_board)
+INSERT INTO additional_choices (hotels_id, half_board, full_board, extra_bed)
 VALUES
-(false, false, true, true, false), -- Id 1
-(true, false, false, false, false), -- Id 2
-(true, false, true, true, true), -- Id 3
-(false, true, true, false, true), -- Id 4
-(false, false, true, false, false); -- Id 5
+(1, TRUE, FALSE, TRUE),  -- Hotel 1: The Coral Retreat
+(2, FALSE, TRUE, FALSE), -- Hotel 2: Northern Lights Lodge
+(3, TRUE, TRUE, TRUE),   -- Hotel 3: Zen Bamboo Haven
+(4, FALSE, TRUE, FALSE), -- Hotel 4: Adventure’s Rest
+(5, TRUE, FALSE, TRUE),  -- Hotel 5: Inca Trail Lodge
+(6, FALSE, FALSE, TRUE), -- Hotel 6: Baobab Breeze Lodge
+(7, TRUE, FALSE, FALSE), -- Hotel 7: Sinking Gondola Inn
+(8, FALSE, TRUE, TRUE),  -- Hotel 8: Moai Shadows Hotel
+(9, TRUE, TRUE, FALSE),  -- Hotel 9: Kangaroo Plains Retreat
+(10, FALSE, FALSE, TRUE);-- Hotel 10: Foggy Table Cabin
 
 INSERT INTO Accomodations (hotel_id, number_of_beds, price)
 VALUES
