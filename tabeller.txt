@@ -1,129 +1,84 @@
--- auto-generated definition
-create table about
-(
-    id             bigserial
-        primary key,
-    pool           boolean default false,
-    entertainment  boolean default false,
-    childrens_club boolean default false,
-    adults_only    boolean default false,
-    restaurant     boolean default false
+CREATE TABLE Location (
+    id BIGSERIAL PRIMARY KEY,
+    country VARCHAR(100) NOT NULL,
+    city VARCHAR(100) NOT NULL,
+    adress VARCHAR(255) NOT NULL,
+    CONSTRAINT unique_location UNIQUE (country, city, adress)
 );
 
-alter table about
-    owner to postgres;
-
--- auto-generated definition
-create table accomodations
-(
-    id             bigserial
-        primary key,
-    hotel_id       bigint
-        constraint fk_accomodations_hotel
-            references hotels
-            on delete cascade,
-    number_of_beds integer          not null,
-    price          double precision not null
+CREATE TABLE About (
+    id BIGSERIAL PRIMARY KEY,
+    pool BOOLEAN DEFAULT FALSE,
+    entertainment BOOLEAN DEFAULT FALSE,
+    childrens_club BOOLEAN DEFAULT FALSE,
+    adults_only BOOLEAN DEFAULT FALSE,
+    restaurant BOOLEAN DEFAULT FALSE
 );
 
-alter table accomodations
-    owner to postgres;
-
--- auto-generated definition
-create table additional_choices
-(
-    id         bigserial
-        primary key,
-    hotels_id  bigint
-        constraint fk_additional_choices_hotel
-            references hotels
-            on delete cascade,
-    half_board boolean default false,
-    full_board boolean default false,
-    extra_bed  boolean default false
+CREATE TABLE Hotels (
+    id BIGSERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    location_id BIGINT,
+    about_id BIGINT,
+    accomodations_count INT,
+    distance_to_beach INT,
+    distance_to_center INT,
+    rating DOUBLE PRECISION
 );
 
-alter table additional_choices
-    owner to postgres;
-
--- auto-generated definition
-create table bookings
-(
-    id                    bigserial
-        primary key,
-    customer_id           bigint
-        constraint fk_bookings_customer
-            references customers
-            on delete cascade,
-    accomodations_id      bigint
-        constraint fk_bookings_accomodations
-            references accomodations
-            on delete cascade,
-    additional_choices_id bigint
-        constraint fk_bookings_additional_choices
-            references additional_choices
-            on delete set null,
-    start_date            timestamp not null,
-    end_date              timestamp not null,
-    is_available          boolean default true,
-    booking_price         bigint    not null
+CREATE TABLE Accomodations (
+    id BIGSERIAL PRIMARY KEY,
+    hotel_id BIGINT,
+    number_of_beds INT NOT NULL,
+    price DOUBLE PRECISION NOT NULL
 );
 
-alter table bookings
-    owner to postgres;
-
--- auto-generated definition
-create table customers
-(
-    id            bigserial
-        primary key,
-    firstname     varchar(100) not null,
-    lastname      varchar(100) not null,
-    email         varchar(255) not null
-        unique,
-    phone_number  varchar(20),
-    date_of_birth date
+CREATE TABLE Customers (
+    id BIGSERIAL PRIMARY KEY,
+    firstname VARCHAR(100) NOT NULL,
+    lastname VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    phone_number VARCHAR(20),
+    date_of_birth DATE
 );
 
-alter table customers
-    owner to postgres;
-
--- auto-generated definition
-create table hotels
-(
-    id                  bigserial
-        primary key,
-    name                varchar(100) not null,
-    location_id         bigint
-        constraint fk_hotels_location
-            references locations
-            on delete cascade,
-    about_id            bigint
-        constraint fk_hotels_about
-            references about
-            on delete cascade,
-    accomodations_count integer,
-    distance_to_beach   integer,
-    distance_to_center  integer,
-    rating              double precision
+CREATE TABLE Bookings (
+    id BIGSERIAL PRIMARY KEY,
+    customer_id BIGINT NOT NULL REFERENCES Customers(id) ON DELETE CASCADE,
+    accomodations_id BIGINT NOT NULL REFERENCES Accomodations(id) ON DELETE CASCADE,
+    additional_choices_id BIGINT REFERENCES additional_choices(id) ON DELETE SET NULL,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP NOT NULL,
+    is_available BOOLEAN DEFAULT TRUE,
+    booking_price BIGINT NOT NULL
 );
 
-alter table hotels
-    owner to postgres;
-
--- auto-generated definition
-create table locations
-(
-    id      bigint default nextval('location_id_seq'::regclass) not null
-        constraint location_pkey
-            primary key,
-    country varchar(100)                                        not null,
-    city    varchar(100)                                        not null,
-    adress  varchar(255)                                        not null,
-    constraint unique_location
-        unique (country, city, adress)
+CREATE TABLE Additional_choices (
+    id BIGSERIAL PRIMARY KEY,
+    hotels_id BIGINT,
+    half_board BOOLEAN DEFAULT FALSE,
+    full_board BOOLEAN DEFAULT FALSE,
+    extra_bed BOOLEAN DEFAULT FALSE
 );
 
-alter table locations
-    owner to postgres;
+ALTER TABLE Hotels 
+ADD CONSTRAINT fk_hotels_location FOREIGN KEY (location_id) REFERENCES Location(id) ON DELETE CASCADE;
+
+ALTER TABLE Hotels 
+ADD CONSTRAINT fk_hotels_about FOREIGN KEY (about_id) REFERENCES About(id) ON DELETE CASCADE;
+
+ALTER TABLE Accomodations 
+ADD CONSTRAINT fk_accomodations_hotel FOREIGN KEY (hotel_id) REFERENCES Hotels(id) ON DELETE CASCADE;
+
+ALTER TABLE Bookings 
+ADD CONSTRAINT fk_bookings_customer FOREIGN KEY (customer_id) REFERENCES Customers(id) ON DELETE CASCADE;
+
+ALTER TABLE Bookings 
+ADD CONSTRAINT fk_bookings_accomodations FOREIGN KEY (accomodations_id) REFERENCES Accomodations(id) ON DELETE CASCADE;
+
+ALTER TABLE Bookings 
+ADD CONSTRAINT fk_bookings_additional_choices FOREIGN KEY (additional_choices_id) REFERENCES additional_choices(id) ON DELETE SET NULL;
+
+ALTER TABLE additional_choices 
+ADD CONSTRAINT fk_additional_choices_hotel FOREIGN KEY (hotels_id) REFERENCES Hotels(id) ON DELETE CASCADE;
 
