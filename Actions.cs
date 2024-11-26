@@ -1,11 +1,12 @@
 using System;
 using Npgsql;
+
 namespace holidaymaker;
 
 public class Actions
 {
     NpgsqlDataSource _db;
-    
+
     public Actions(NpgsqlDataSource db)
     {
         _db = db;
@@ -32,7 +33,8 @@ public class Actions
             {
                 while (await reader.ReadAsync())
                 {
-                    Console.WriteLine($"id: {reader.GetInt32(0)} \t name: {reader.GetString(1)} \t slogan: {reader.GetString(2)}");
+                    Console.WriteLine(
+                        $"id: {reader.GetInt32(0)} \t name: {reader.GetString(1)} \t slogan: {reader.GetString(2)}");
                 }
             }
         }
@@ -67,10 +69,9 @@ public class Actions
                 cmd.Parameters.AddWithValue(slogan);
                 await cmd.ExecuteNonQueryAsync();
             }
-            
         }
     }
-    
+
     public async void DeleteOne(string id)
     {
         // Delete data
@@ -80,5 +81,4 @@ public class Actions
             await cmd.ExecuteNonQueryAsync();
         }
     }
-    
 }
