@@ -11,7 +11,7 @@ VALUES
 ('Australia', 'Sydney', 'Opera House Square 5'),
 ('South Africa', 'Cape Town', 'Table Mountain Road 18');
 
-INSERT INTO Additional_choices (pool, entertainment, childrens_club, adults_only, restaurant, half_board, full_board)
+INSERT INTO Additional_choices (entertainment, childrens_club, adults_only, restaurant, half_board, full_board)
 VALUES
 (true, false, false, false, true, true, false), -- Id 1
 (false, true, true, false, false, false, false), -- Id 2
