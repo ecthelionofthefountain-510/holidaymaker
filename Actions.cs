@@ -13,7 +13,7 @@ public class Actions
 
     public async void ListAll()
     {
-        await using (var cmd = _db.CreateCommand("SELECT * FROM items"))
+        await using (var cmd = _db.CreateCommand("SELECT * FROM customers"))
         await using (var reader = await cmd.ExecuteReaderAsync())
         {
             while (await reader.ReadAsync())
