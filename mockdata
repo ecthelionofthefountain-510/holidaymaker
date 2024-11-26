@@ -11,46 +11,53 @@ VALUES
 ('Australia', 'Sydney', 'Opera House Square 5'),
 ('South Africa', 'Cape Town', 'Table Mountain Road 18');
 
+INSERT INTO About (pool, entertainment, childrens_club, adults_only, restaurant)
+VALUES
+(TRUE, TRUE, FALSE, FALSE, TRUE),   -- The Coral Retreat
+(FALSE, TRUE, TRUE, FALSE, FALSE), -- Northern Lights Lodge
+(TRUE, TRUE, FALSE, FALSE, TRUE),  -- Zen Bamboo Haven
+(TRUE, FALSE, FALSE, TRUE, TRUE),  -- Adventure’s Rest
+(FALSE, FALSE, TRUE, FALSE, TRUE), -- Inca Trail Lodge
+(FALSE, FALSE, FALSE, FALSE, TRUE), -- Baobab Breeze Lodge
+(TRUE, FALSE, FALSE, FALSE, TRUE), -- Sinking Gondola Inn
+(TRUE, FALSE, FALSE, FALSE, FALSE), -- Moai Shadows Hotel
+(TRUE, TRUE, FALSE, FALSE, TRUE), -- Kangaroo Plains Retreat
+(TRUE, FALSE, FALSE, FALSE, TRUE); -- Foggy Table Cabin
+
 INSERT INTO Additional_choices (entertainment, childrens_club, adults_only, restaurant, half_board, full_board)
 VALUES
-(true, false, false, false, true, true, false), -- Id 1
-(false, true, true, false, false, false, false), -- Id 2
-(true, true, true, false, true, true, true), -- Id 3
-(false, false, false, true, true, false, true), -- Id 4
-(true, true, false, false, true, false, false); -- Id 5
+(false, false, false, true, true, false), -- Id 1
+(true, true, false, false, false, false), -- Id 2
+(true, true, false, true, true, true), -- Id 3
+(false, false, true, true, false, true), -- Id 4
+(true, false, false, true, false, false); -- Id 5
 
-INSERT INTO Accomodations (number_of_beds, additional_choice_id, price)
+INSERT INTO Accomodations (hotel_id, number_of_beds, price)
 VALUES
-(2, 1, 500),
-(2, 2, 550),
-(4, 3, 1000),
-(6, 4, 1200),
-(2, 1, 600),
-(4, 2, 900),
-(6, 3, 1300),
-(1, 1, 400),
-(2, 2, 550),
-(4, 3, 950),
-(6, 4, 1250),
-(1, 1, 450),
+(1, 2, 500),
+(1, 2, 550),
+(1, 4, 1000),
+(1, 6, 1200),
 (2, 2, 600),
-(4, 3, 1100),
-(6, 4, 1350),
-(1, 1, 500),
-(2, 2, 700),
-(4, 3, 1050),
-(6, 4, 1400),
-(4, 1, 1000),
-(4, 2, 1100),
-(6, 2, 1500),
-(2, 3, 800),
-(2, 4, 850),
-(1, 1, 450),
-(2, 2, 750),
-(4, 3, 1150),
-(4, 4, 950),
-(6, 1, 1400),
-(2, 1, 600);
+(2, 4, 900),
+(2, 6, 1300),
+(3, 1, 400),
+(3, 2, 550),
+(3, 4, 950),
+(4, 6, 1250),
+(4, 1, 450),
+(4, 2, 600),
+(5, 4, 1100),
+(5, 6, 1350),
+(6, 1, 500),
+(6, 2, 700),
+(7, 4, 1050),
+(8, 6, 1400),
+(8, 4, 1000),
+(9, 4, 1100),
+(10, 6, 1500),
+(10, 2, 800),
+(10, 2, 850);
 
 INSERT INTO Customers (firstname, lastname, email, phone_number, date_of_birth) VALUES
 ('Emma', 'Andersson', 'emma.andersson@example.com', '0701234567', '1990-03-15'),
@@ -74,41 +81,41 @@ INSERT INTO Customers (firstname, lastname, email, phone_number, date_of_birth) 
 ('Stella', 'Holm', 'stella.holm@example.com', '0709010000', '1988-12-19'),
 ('Hugo', 'Magnusson', 'hugo.magnusson@example.com', '0700120000', '1995-11-25');
 
-INSERT INTO Bookings (customer_id, accomodations_id, start_date, end_date, booking_price)
+INSERT INTO Bookings (customer_id, accomodations_id, additional_choices_id, start_date, end_date, is_available, booking_price)
 VALUES
-(1, 1, '2024-12-01', '2024-12-05', 2500),
-(2, 2, '2024-12-10', '2024-12-15', 2750),
-(3, 3, '2024-12-20', '2024-12-22', 2000),
-(4, 4, '2024-12-25', '2024-12-30', 4500),
-(5, 5, '2025-01-01', '2025-01-03', 1800),
-(6, 6, '2025-01-10', '2025-01-12', 3600),
-(7, 7, '2025-01-15', '2025-01-20', 5500),
-(8, 8, '2025-01-20', '2025-01-25', 4000),
-(9, 9, '2024-12-03', '2024-12-05', 2200),
-(10, 10, '2024-12-08', '2024-12-12', 3100),
-(1, 11, '2024-12-15', '2024-12-18', 2900),
-(2, 12, '2024-12-20', '2024-12-25', 3700),
-(3, 13, '2024-12-28', '2024-12-30', 3000),
-(4, 14, '2025-01-02', '2025-01-06', 3800),
-(5, 15, '2025-01-08', '2025-01-13', 4700),
-(6, 16, '2025-01-15', '2025-01-20', 5400),
-(7, 17, '2024-12-05', '2024-12-07', 2100),
-(8, 18, '2024-12-12', '2024-12-14', 3300),
-(9, 19, '2024-12-20', '2024-12-23', 3900),
-(10, 20, '2024-12-28', '2024-12-30', 2800);
+(1, 1, 1, '2024-12-01', '2024-12-05', TRUE, 2500),
+(2, 2, 2, '2024-12-10', '2024-12-15', TRUE, 2750),
+(3, 3, NULL, '2024-12-20', '2024-12-22', TRUE, 2000),
+(4, 4, 4, '2024-12-25', '2024-12-30', FALSE, 4500),
+(5, 5, 5, '2025-01-01', '2025-01-03', TRUE, 1800),
+(6, 6, NULL, '2025-01-10', '2025-01-12', TRUE, 3600),
+(7, 7, 1, '2025-01-15', '2025-01-20', FALSE, 5500),
+(8, 8, 2, '2025-01-20', '2025-01-25', TRUE, 4000),
+(9, 9, NULL, '2024-12-03', '2024-12-05', TRUE, 2200),
+(10, 10, 3, '2024-12-08', '2024-12-12', TRUE, 3100),
+(1, 11, 4, '2024-12-15', '2024-12-18', FALSE, 2900),
+(2, 12, 5, '2024-12-20', '2024-12-25', TRUE, 3700),
+(3, 13, NULL, '2024-12-28', '2024-12-30', TRUE, 3000),
+(4, 14, 1, '2025-01-02', '2025-01-06', FALSE, 3800),
+(5, 15, 2, '2025-01-08', '2025-01-13', TRUE, 4700),
+(6, 16, NULL, '2025-01-15', '2025-01-20', TRUE, 5400),
+(7, 17, 3, '2024-12-05', '2024-12-07', TRUE, 2100),
+(8, 18, 4, '2024-12-12', '2024-12-14', FALSE, 3300),
+(9, 19, NULL, '2024-12-20', '2024-12-23', TRUE, 3900),
+(10, 20, 5, '2024-12-28', '2024-12-30', TRUE, 2800);
 
-INSERT INTO Hotels (name, location_id, accomodations_count, distance_to_beach, distance_to_center, rating)
+INSERT INTO Hotels (name, location_id, about_id, accomodations_count, distance_to_beach, distance_to_center, rating)
 VALUES
-('The Coral Retreat', 1, 6, 50, 200, 4.7), -- Maldives
-('Northern Lights Lodge', 2, 8, 300, 150, 4.9), -- Iceland
-('Zen Bamboo Haven', 3, 10, 500, 100, 4.8), -- Japan
-('Adventure’s Rest', 4, 5, 1000, 300, 4.6), -- New Zealand
-('Inca Trail Lodge', 5, 7, 800, 400, 4.5), -- Peru
-('Baobab Breeze Lodge', 6, 4, 300, 1000, 3.6), -- Madagascar
-('Sinking Gondola Inn', 7, 6, 50, 200, 3.5), -- Italy
-('Moai Shadows Hotel', 8, 5, 1500, 500, 3.7), -- Chile
-('Kangaroo Plains Retreat', 9, 3, 1000, 800, 3.8), -- Australia
-('Foggy Table Cabin', 10, 4, 2000, 1200, 3.9); -- South Africa
+('The Coral Retreat', 1, 1, 6, 50, 200, 4.7),
+('Northern Lights Lodge', 2, 2, 8, 300, 150, 4.9),
+('Zen Bamboo Haven', 3, 3, 10, 500, 100, 4.8),
+('Adventure’s Rest', 4, 4, 5, 1000, 300, 4.6),
+('Inca Trail Lodge', 5, 5, 7, 800, 400, 4.5),
+('Baobab Breeze Lodge', 6, 6, 4, 300, 1000, 3.6),
+('Sinking Gondola Inn', 7, 7, 6, 50, 200, 3.5),
+('Moai Shadows Hotel', 8, 8, 5, 1500, 500, 3.7),
+('Kangaroo Plains Retreat', 9, 9, 3, 1000, 800, 3.8),
+('Foggy Table Cabin', 10, 10, 4, 2000, 1200, 3.9);
 
 INSERT INTO Availability (date, is_available, accomodation_id) VALUES
 -- Boende 1
