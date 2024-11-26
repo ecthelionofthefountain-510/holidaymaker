@@ -1,0 +1,5 @@
+** Om du fått fel ID i en tabell **
+
+TRUNCATE TABLE <tabellnamn> RESTART IDENTITY CASCADE;
+
+ex. TRUNCATE TABLE Accomodations RESTART IDENTITY CASCADE;
