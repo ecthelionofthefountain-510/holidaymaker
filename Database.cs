@@ -6,7 +6,7 @@ public class Database
 {
 
     private readonly string _host = "localhost";
-    private readonly string _port = "5432";
+    private readonly string _port = "5435";
     private readonly string _username = "postgres";
     private readonly string _password = "root";
     private readonly string _database = "database_for_menu";
