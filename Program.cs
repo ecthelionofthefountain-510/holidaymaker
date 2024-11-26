@@ -1,4 +1,4 @@
-﻿namespace MenuWithDatabase;
+﻿namespace holidaymaker;
 
 class Program
 {

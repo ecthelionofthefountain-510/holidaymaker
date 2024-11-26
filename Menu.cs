@@ -1,6 +1,6 @@
     using System;
 
-    namespace MenuWithDatabase;
+    namespace holidaymaker;
 
 public class Menu
 {

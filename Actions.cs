@@ -1,6 +1,6 @@
 using System;
 using Npgsql;
-namespace MenuWithDatabase;
+namespace holidaymaker;
 
 public class Actions
 {
