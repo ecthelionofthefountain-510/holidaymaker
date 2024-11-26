@@ -5,11 +5,11 @@ namespace MenuWithDatabase;
 public class Database
 {
 
-    private readonly string _host = "localhost";
+    private readonly string _host = "42.10.162.204";
     private readonly string _port = "5435";
     private readonly string _username = "postgres";
-    private readonly string _password = "root";
-    private readonly string _database = "database_for_menu";
+    private readonly string _password = "InsecureGorillaPukes33";
+    private readonly string _database = "holidaymaker-cloud";
 
     private NpgsqlDataSource _connection;
 
