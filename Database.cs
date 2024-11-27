@@ -9,7 +9,7 @@ public class Database
     private readonly string _port = "5435";
     private readonly string _username = "postgres";
     private readonly string _password = "InsecureGorillaPukes33";
-    private readonly string _database = "holidaymaker-cloud";
+    private readonly string _database = "postgres";
 
     private NpgsqlDataSource _connection;
 
