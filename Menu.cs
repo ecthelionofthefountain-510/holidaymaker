@@ -14,7 +14,7 @@ public class Menu
     private void PrintMenu()
     {
         Console.WriteLine("Choose option");
-        Console.WriteLine("1. List all");
+        Console.WriteLine("1. Register Customer");
         Console.WriteLine("2. Show one");
         Console.WriteLine("3. Add one");
         Console.WriteLine("4. Update one");
@@ -33,8 +33,8 @@ public class Menu
             switch (response)
             {
                 case("1"):
-                    Console.WriteLine("Listing all");
-                    _actions.ListAll();
+                    Console.WriteLine("Register Customer");
+                    _actions.RegCustomer("firstname", "lastname", "", "", date_of_birth: DateTime.Now);
                     break;
                 case("2"):
                     Console.WriteLine("Enter id to show details about one");

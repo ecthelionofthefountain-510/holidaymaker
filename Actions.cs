@@ -50,17 +50,17 @@ public class Actions
             await cmd.ExecuteNonQueryAsync();
         }
     }
-    public async void regCustomer(string firstname, string lastname, string email, string phoneNumber, DateTime dateOfBirth )
+    public async void RegCustomer(string firstname, string lastname, string email, string phone_number, DateTime date_of_birth )
     {
         // Insert data
-        await using (var cmd = _db.CreateCommand("INSERT INTO customers (firstname, lastname, email, phoneNumber, DateTime ) VALUES ($1, $2, $3, $4, $5 )"))
+        await using (var cmd = _db.CreateCommand("INSERT INTO customers (firstname, lastname, email, phone_number, date_of_birth ) VALUES ($1, $2, $3, $4, $5 )"))
         {
          
-            cmd.Parameters.AddWithValue(firstname);
-            cmd.Parameters.AddWithValue(lastname);
-            cmd.Parameters.AddWithValue(email);
-            cmd.Parameters.AddWithValue(phoneNumber);
-            cmd.Parameters.AddWithValue(dateOfBirth);
+            cmd.Parameters.AddWithValue("$1", firstname ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$2", lastname ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$3", email ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$4", phone_number ?? (object)DBNull.Value);
+            cmd.Parameters.AddWithValue("$5", date_of_birth);
             await cmd.ExecuteNonQueryAsync();
         }
     }
