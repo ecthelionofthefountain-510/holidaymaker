@@ -113,6 +113,9 @@ public class Menu
                     Console.WriteLine("Quitting");
                     Environment.Exit(0);
                     break;
+                case("10"):
+                    _actions.SearchRoom();
+                    break;
             }
 
             PrintMenu();
