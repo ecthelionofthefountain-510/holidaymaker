@@ -13,10 +13,14 @@ public class Menu
     
     /* Skapa bokning
      case 1. 
-     registrera kunden
+     registrera kunden  //feature/regCustumer
      
      Vart vill du åka?
-     svar: land
+     svar: land      //feature/listDestination  
+     "listar länder,
+     om land = list hotels i det landet,  
+     mellan vilka datum?
+     om hotell = lista alla room på det hotellet"
      
      Vilken stad?
      svar: stad
@@ -41,7 +45,7 @@ public class Menu
     private void PrintMenu()
     {
         // Features
-        Console.WriteLine("Boka resa");
+        Console.WriteLine("Boka resa"); 
         Console.WriteLine("1. Registrera kund/kunder");
         Console.WriteLine("2. Välj land?");
         Console.WriteLine("3. Välj hotell");
