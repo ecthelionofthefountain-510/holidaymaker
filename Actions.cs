@@ -87,7 +87,6 @@ public class Actions
             await cmd.ExecuteNonQueryAsync();
             
         }
-        Console.WriteLine("New customer registered.");
     }
 
     public async void UpdateOne(string id)
