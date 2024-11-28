@@ -33,8 +33,7 @@ public class Menu
             switch (response)
             {
                 case("1"):
-                    Console.WriteLine("Register Customer");
-                    _actions.RegCustomer("firstname", "lastname", "", "", date_of_birth: DateTime.Now);
+                    _actions.RegCustomer();
                     break;
                 case("2"):
                     Console.WriteLine("Enter id to show details about one");

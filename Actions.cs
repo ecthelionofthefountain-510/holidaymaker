@@ -50,19 +50,44 @@ public class Actions
             await cmd.ExecuteNonQueryAsync();
         }
     }
-    public async void RegCustomer(string firstname, string lastname, string email, string phone_number, DateTime date_of_birth )
+    public async void RegCustomer()
     {
+        Console.WriteLine("Register a new customer\n");
+
+        Console.WriteLine("1. Enter firstname");
+        string? firstName = Console.ReadLine();
+
+        Console.WriteLine("2. Enter lastname");
+        string? lastName = Console.ReadLine();
+
+        Console.WriteLine("3. Enter email");
+        string? email = Console.ReadLine();
+
+        Console.WriteLine("4. Enter phone number");
+        string? phoneNumber = Console.ReadLine();
+
+        Console.WriteLine("5. Enter date of birth (yyyy-mm-dd)");
+        string? dateOfBirthInput = Console.ReadLine();
+
+        if (!DateTime.TryParse(dateOfBirthInput, out DateTime dateOfBirth))
+        {
+            Console.WriteLine("Invalid date format. Please try again");
+            return;
+        }
         // Insert data
         await using (var cmd = _db.CreateCommand("INSERT INTO customers (firstname, lastname, email, phone_number, date_of_birth ) VALUES ($1, $2, $3, $4, $5 )"))
         {
-         
-            cmd.Parameters.AddWithValue("$1", firstname ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$2", lastname ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$3", email ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$4", phone_number ?? (object)DBNull.Value);
-            cmd.Parameters.AddWithValue("$5", date_of_birth);
+
+            cmd.Parameters.AddWithValue(firstName);
+            cmd.Parameters.AddWithValue(lastName);
+            cmd.Parameters.AddWithValue(email);
+            cmd.Parameters.AddWithValue(phoneNumber);
+            cmd.Parameters.AddWithValue(dateOfBirth);
+
             await cmd.ExecuteNonQueryAsync();
+            
         }
+        Console.WriteLine("New customer registered.");
     }
 
     public async void UpdateOne(string id)
