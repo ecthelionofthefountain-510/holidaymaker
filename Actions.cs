@@ -1,4 +1,5 @@
 using System;
+using System.Net.Http.Headers;
 using Npgsql;
 
 namespace holidaymaker;
@@ -23,6 +24,48 @@ public class Actions
             }
         }
     }
+
+    public async void ListCountries()
+    {
+        Console.WriteLine("Vart vill du åka?");
+        // visa länder
+        await using (var cmd = _db.CreateCommand("SELECT id, country FROM locations"))
+        await using (var reader = await cmd.ExecuteReaderAsync())
+        {
+            while (await reader.ReadAsync())
+            {
+                Console.WriteLine($"id: {reader.GetInt32(0)} \t country: {reader.GetString(1)}");
+            }
+        } 
+    }
+
+
+    /*
+    Console.WriteLine("När vill du åka?");
+    // välj mellan vilka datum
+    // visa hotell (about)
+    // visa hotell distance to beach distance to center
+    Console.WriteLine("Välj hotell");
+    // välj hotell
+    Console.WriteLine("Välj rum");
+    // visa lediga rum
+    // välj rum
+    // välj extra alternativ
+
+
+
+
+
+
+    await using (var cmd = _db.CreateCommand("SELECT * FROM customers"))
+    await using (var reader = await cmd.ExecuteReaderAsync())
+    {
+        while (await reader.ReadAsync())
+        {
+            Console.WriteLine($"id: {reader.GetInt32(0)} \t name: {reader.GetString(1)}");
+        }
+    }*/
+        
 
     public async void ShowOne(string id)
     {

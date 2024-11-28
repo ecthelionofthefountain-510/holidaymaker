@@ -16,7 +16,7 @@ public class Menu
         Console.WriteLine("Choose option");
         Console.WriteLine("1. Register Customer");
         Console.WriteLine("2. Show one");
-        Console.WriteLine("3. List countries");
+        Console.WriteLine("6. List contries");
         Console.WriteLine("4. Update one");
         Console.WriteLine("5. Delete one");
         Console.WriteLine("9. Quit");
@@ -69,6 +69,9 @@ public class Menu
                     { 
                         _actions.DeleteOne(id);
                     }
+                    break;
+                case"6":
+                    _actions.ListCountries();
                     break;
                 case("9"):
                     Console.WriteLine("Quitting");
