@@ -16,7 +16,7 @@ public class Menu
         Console.WriteLine("Choose option");
         Console.WriteLine("1. Register Customer");
         Console.WriteLine("2. Show one");
-        Console.WriteLine("3. Create booking"); // sök på land, välj land, visa hotell + about, välj hotell, visa rum, välj rum, välj tillägg, visa pris, spara bokning 
+        Console.WriteLine("3. List countries");
         Console.WriteLine("4. Update one");
         Console.WriteLine("5. Delete one");
         Console.WriteLine("9. Quit");
