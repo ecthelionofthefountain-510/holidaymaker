@@ -50,6 +50,20 @@ public class Actions
             await cmd.ExecuteNonQueryAsync();
         }
     }
+    public async void regCustomer(string firstname, string lastname, string email, string phoneNumber, DateTime dateOfBirth )
+    {
+        // Insert data
+        await using (var cmd = _db.CreateCommand("INSERT INTO customers (firstname, lastname, email, phoneNumber, DateTime ) VALUES ($1, $2, $3, $4, $5 )"))
+        {
+         
+            cmd.Parameters.AddWithValue(firstname);
+            cmd.Parameters.AddWithValue(lastname);
+            cmd.Parameters.AddWithValue(email);
+            cmd.Parameters.AddWithValue(phoneNumber);
+            cmd.Parameters.AddWithValue(dateOfBirth);
+            await cmd.ExecuteNonQueryAsync();
+        }
+    }
 
     public async void UpdateOne(string id)
     {
