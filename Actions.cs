@@ -110,6 +110,7 @@ public class Actions
         string phoneNumber = Console.ReadLine();
         Console.Write("Födelsedatum (yyyy-MM-dd): ");
         string dateOfBirth = Console.ReadLine();
+        continue;
 
         // Spara gästinformation i databasen
         await using (var cmd = _db.CreateCommand(@"
@@ -159,6 +160,8 @@ public class Actions
     Console.Write("Sortera på omdöme (högt till lågt)? (y/n): ");
     bool sortByRating = Console.ReadLine().ToLower() == "y";
 
+    
+
     // 3. Bygg SQL-query
     string query = $@"
         SELECT 
@@ -187,6 +190,7 @@ public class Actions
             {(sortByPrice ? "A.price ASC" : sortByRating ? "H.rating DESC" : "A.id")};
     ";
 
+    
     // 4. Exekvera SQL-query och visa resultat
     Console.WriteLine("\n--- Lediga rum ---");
     await using (var cmd = _db.CreateCommand(query))
@@ -199,7 +203,9 @@ public class Actions
                 $"{reader["DistanceToBeach"]} m från stranden - {reader["DistanceToCenter"]} m från centrum - " +
                 $"{reader["Rating"]} betyg"
             );
+          
         }
+        
     }
 }
     
