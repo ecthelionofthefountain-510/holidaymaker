@@ -51,6 +51,38 @@ public class Actions
             Console.WriteLine($"Kund tillagd med ID: {customerId}");
     }
 
+    public async void SearchRooms()
+    {
+        Console.WriteLine("Sök lediga rum\n");
+        Console.WriteLine("Från datum: (yyyy-mm-dd)");
+        string? startDate = Console.ReadLine();
+        Console.WriteLine("Till datum: (yyyy-mm-dd)");
+        string? endDate = Console.ReadLine();
+
+        var query = @"
+            SELECT a.id, h.name, a.number_of_beds, a.price
+            FROM accommodations a 
+            JOIN hotels h
+            ON h.id = a.hotel_id
+            WHERE a.id NOT IN (
+                SELECT accommodations_id
+                FROM bookings
+                WHERE (start_date, end_date) OVERLAPS ($1, $2)
+        )";
+
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(DateTime.Parse(startDate));
+        cmd.Parameters.AddWithValue(DateTime.Parse(endDate));
+        await using var reader = await cmd.ExecuteReaderAsync();
+
+        Console.WriteLine("Lediga rum");
+        while (await reader.ReadAsync())
+        {
+            Console.WriteLine(
+                $"ID: {reader.GetInt64(0)}, Hotell: {reader.GetString(1)}, Sängar: {reader.GetInt32(2)}, Pris: {reader.GetDouble(3)}");
+        }
+    }
+
     public async void ListAll()
     {
         await using (var cmd = _db.CreateCommand("SELECT * FROM customers"))

@@ -67,12 +67,7 @@ public class Menu
                     _actions.RegCustomer();
                     break;
                 case("2"):
-                    Console.WriteLine("Enter id to show details about one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.ShowOne(id);
-                    }
+                    _actions.SearchRooms();
                     break;
                 case("3"):
                     Console.WriteLine("Enter name (required)");
