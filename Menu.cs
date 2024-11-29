@@ -64,8 +64,7 @@ public class Menu
             switch (response)
             {
                 case("1"):
-                    Console.WriteLine("Listing all");
-                    _actions.ListAll();
+                    _actions.RegCustomer();
                     break;
                 case("2"):
                     Console.WriteLine("Enter id to show details about one");
