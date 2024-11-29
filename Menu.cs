@@ -10,6 +10,12 @@ public class Menu
         _actions = actions;
         PrintMenu();
     }
+    /* Menu
+     * 1. Sök efter lediga rum från datum till datum // Ska visa LAND HOTELL RUM TILLGÄNGLIGT
+     *      och välj rum.                // sökningen ska returnera ett id, som används i nästa sökning
+     * 2. V
+     * 
+     */
 
     private void PrintMenu()
     {
