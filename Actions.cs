@@ -50,7 +50,6 @@ public class Actions
             
             Console.WriteLine($"Kund tillagd med ID: {customerId}");
     }
-
     public async void SearchRooms()
     {
         Console.WriteLine("Sök lediga rum\n");
@@ -59,11 +58,13 @@ public class Actions
         Console.WriteLine("Till datum: (yyyy-mm-dd)");
         string? endDate = Console.ReadLine();
 
-        var query = @"
-            SELECT a.id, h.name, a.number_of_beds, a.price
+        string query = @"
+            SELECT a.id, country, h.name, a.number_of_beds, a.price
             FROM accommodations a 
             JOIN hotels h
             ON h.id = a.hotel_id
+            JOIN locations l 
+            ON h.location_id = l.id
             WHERE a.id NOT IN (
                 SELECT accommodations_id
                 FROM bookings
@@ -79,7 +80,7 @@ public class Actions
         while (await reader.ReadAsync())
         {
             Console.WriteLine(
-                $"ID: {reader.GetInt64(0)}, Hotell: {reader.GetString(1)}, Sängar: {reader.GetInt32(2)}, Pris: {reader.GetDouble(3)}");
+                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)} Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
         }
     }
 
