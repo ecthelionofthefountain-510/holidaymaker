@@ -47,18 +47,10 @@ public class Menu
         // Features
         Console.WriteLine("Boka resa"); 
         Console.WriteLine("1. Registrera kund/kunder");
-        Console.WriteLine("2. Välj land?");
-        Console.WriteLine("3. Välj hotell");
-        Console.WriteLine("4. Filtrera på ratings");
-        Console.WriteLine("5. Sök på boenden baserat på avstånd till centrum");
-        Console.WriteLine("6. Sök på boenden baserat på avstånd till havet");
-        Console.WriteLine("7. Tilläggsval (additional_choices)");
-        Console.WriteLine("8. List customers (antal personer, för- och efternamn, email, telefon, födelsedata)");
-        Console.WriteLine("9. Söka boenden baserat på pris (lågt till högt)");
-        Console.WriteLine("10. Sök lediga rum med specificerade sökkriterier");
-        Console.WriteLine("11. Ändra bokning");
-        Console.WriteLine("12. Boka!");
-        Console.WriteLine("0. Quit");
+        Console.WriteLine("2. Sök lediga rum");
+        Console.WriteLine("3. Välj rum och lägg till alternativ");
+        Console.WriteLine("4. Visa och slutför bokning");
+        Console.WriteLine("5. Avsluta");
         AskUser();
     }
 
