@@ -16,9 +16,9 @@ public class Menu
         // Features
         Console.WriteLine("Boka resa"); 
         Console.WriteLine("1. Registrera kund/kunder");
-        Console.WriteLine("2. Sök lediga rum");
-        Console.WriteLine("3. Välj rum och lägg till alternativ");
-        Console.WriteLine("4. Visa och slutför bokning");
+        Console.WriteLine("2. Search available rooms");
+        Console.WriteLine("3. Choose room and extra options");
+        Console.WriteLine("4. Show and save booking");
         Console.WriteLine("5. Avsluta");
         AskUser();
     }
@@ -42,22 +42,9 @@ public class Menu
                     _actions.AddRoomAndOptions();
                     break;
                 case("4"):
-                    Console.WriteLine("Enter id to update one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.UpdateOne(id);
-                    }
+                    _actions.SaveBooking();
                     break;
                 case("5"):
-                    Console.WriteLine("Enter id to delete one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.DeleteOne(id);
-                    }
-                    break;
-                case("9"):
                     Console.WriteLine("Quitting");
                     Environment.Exit(0);
                     break;

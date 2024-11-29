@@ -109,6 +109,23 @@ public class Actions
         Console.WriteLine($"Rooms and extra choices saved into booking ID: {bookingId}");
     }
 
+    public async void SaveBooking()
+    {
+        Console.WriteLine("Enter customer-ID to booking: ");
+        long customerId = long.Parse(Console.ReadLine());
+
+        Console.WriteLine("Enter booking-ID: ");
+        long bookingId = long.Parse(Console.ReadLine());
+
+        string query = "INSERT INTO booking_customers (booking_id, customer_id) VALUES ($1, $2)";
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(bookingId);
+        cmd.Parameters.AddWithValue(customerId);
+        await cmd.ExecuteNonQueryAsync();
+
+        Console.WriteLine("Booking saved!");
+    }
+
     public async void ListAll()
     {
         await using (var cmd = _db.CreateCommand("SELECT * FROM customers"))
