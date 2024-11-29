@@ -16,7 +16,7 @@ public class Menu
         Console.WriteLine("Choose option");
         Console.WriteLine("1. Register Customer");
         Console.WriteLine("2. Show one");
-        Console.WriteLine("3. Add one");
+        Console.WriteLine("3. Välj land");
         Console.WriteLine("4. Update one");
         Console.WriteLine("5. Delete one");
         Console.WriteLine("9. Quit");
@@ -43,15 +43,9 @@ public class Menu
                         _actions.ShowOne(id);
                     }
                     break;
-                case("3"):
-                    Console.WriteLine("Enter name (required)");
-                    var name = Console.ReadLine(); // required
-                    Console.WriteLine("Enter slogan");
-                    var slogan = Console.ReadLine(); // not required
-                    if (name is not null)
-                    {
-                        _actions.AddOne(name, slogan);
-                    }
+                case ("3"):
+                    _ChooseCountry();
+                    
                     break;
                 case("4"):
                     Console.WriteLine("Enter id to update one");

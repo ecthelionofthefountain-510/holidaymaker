@@ -120,4 +120,13 @@ public class Actions
             await cmd.ExecuteNonQueryAsync();
         }
     }
+
+    public async void ChooseCountry()
+    {
+        Console.WriteLine("vart vill du åka?");
+        
+    }
+    
+    
+    
 }
