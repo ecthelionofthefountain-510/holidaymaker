@@ -86,20 +86,28 @@ public class Actions
 
     public async void AddRoomAndOptions()
     {
+        Console.WriteLine("Enter your customer ID: ");
+        long? customerId = long.Parse(Console.ReadLine());
+        
         Console.WriteLine("Choose your room (enter ID)");
         long? accommodationId = long.Parse(Console.ReadLine());
 
         Console.WriteLine("Do you want an extra bed? (yes/no): ");
         bool extraBed = Console.ReadLine()?.ToLower() == "yes";
 
-        Console.WriteLine("Do you want full pension? (yes/no)");
+        Console.WriteLine("Do you want full pension? (yes/no): ");
         bool fullBoard = Console.ReadLine()?.ToLower() == "yes";
 
-        Console.WriteLine("Do you want half pension? (yes/no");
+        Console.WriteLine("Do you want half pension? (yes/no): ");
         bool halfBoard = Console.ReadLine()?.ToLower() == "yes";
 
-        string query = "INSERT INTO bookings (accommodations_id, extra_bed, full_board, half_board) VALUES ($1, $2, $3, $4) RETURNING id";
+        string query = @"
+            INSERT INTO bookings (customer_id, accommodations_id, extra_bed, full_board, half_board) 
+            VALUES ($1, $2, $3, $4, $5) 
+            RETURNING id";
+        
         await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(customerId);
         cmd.Parameters.AddWithValue(accommodationId);
         cmd.Parameters.AddWithValue(extraBed);
         cmd.Parameters.AddWithValue(fullBoard);
