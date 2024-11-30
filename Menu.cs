@@ -13,7 +13,7 @@ public class Menu
 
     private void PrintMenu()
     {
-        Console.WriteLine("Choose option");
+        Console.WriteLine("Choose option"); // merge till feat2
         Console.WriteLine("1. List all");
         Console.WriteLine("2. Show one");
         Console.WriteLine("3. Add one");
