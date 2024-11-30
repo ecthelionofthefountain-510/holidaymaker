@@ -34,7 +34,6 @@ public class Menu
             {
                 case("1"):
                     _actions.RegCustomer();
-                    Console.WriteLine("New customer registered.");
                     break;
                 case("2"):
                     Console.WriteLine("Enter id to show details about one");
