@@ -16,9 +16,9 @@ public class Menu
         // Features
         Console.WriteLine("Boka resa"); 
         Console.WriteLine("1. Registrera kund/kunder");
-        Console.WriteLine("2. Search available rooms");
-        Console.WriteLine("3. Choose room and extra options");
-        Console.WriteLine("4. Show and save booking");
+        Console.WriteLine("2. Sök lediga rum");
+        Console.WriteLine("3. Välj rum och extra alternativ");
+        Console.WriteLine("4. Spara bokning");
         Console.WriteLine("5. Avsluta");
         AskUser();
     }
