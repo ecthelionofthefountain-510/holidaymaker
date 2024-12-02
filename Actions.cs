@@ -46,7 +46,6 @@ public class Actions
             cmd.Parameters.AddWithValue(email);
             cmd.Parameters.AddWithValue(phoneNumber);
             cmd.Parameters.AddWithValue(dateOfBirth);
-
             var customerId = (long)await cmd.ExecuteNonQueryAsync();
             
             Console.WriteLine($"Kund tillagd med ID: {customerId}");
@@ -80,8 +79,7 @@ public class Actions
         Console.WriteLine("Lediga rum");
         while (await reader.ReadAsync())
         {
-            Console.WriteLine(
-                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)} Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
+            Console.WriteLine($"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)} Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
         }
     }
 

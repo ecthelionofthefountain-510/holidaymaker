@@ -25,6 +25,7 @@ public class Menu
 
     private async void AskUser()
     {
+        
         var response = Console.ReadLine();
         if (response is not null)
         {
