@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices.JavaScript;
 using Npgsql;
 
 namespace holidaymaker;
@@ -54,9 +55,16 @@ public class Actions
     {
         Console.WriteLine("Sök lediga rum\n");
         Console.WriteLine("Från datum: (yyyy-mm-dd)");
-        string? startDate = Console.ReadLine();
+        string? startDateInput = Console.ReadLine();
         Console.WriteLine("Till datum: (yyyy-mm-dd)");
-        string? endDate = Console.ReadLine();
+        string? endDateInput = Console.ReadLine();
+
+        if (!DateTime.TryParse(startDateInput, out DateTime startDate) ||
+            !DateTime.TryParse(endDateInput, out DateTime endDate))
+        {
+            Console.WriteLine("Felaktigt datumformat. Försök igen.");
+            return;
+        }
 
         string query = @"
             SELECT a.id, country, h.name, a.number_of_beds, a.price
@@ -72,49 +80,97 @@ public class Actions
         )";
 
         await using var cmd = _db.CreateCommand(query);
-        cmd.Parameters.AddWithValue(DateTime.Parse(startDate));
-        cmd.Parameters.AddWithValue(DateTime.Parse(endDate));
+        cmd.Parameters.AddWithValue(startDate);
+        cmd.Parameters.AddWithValue(endDate);
         await using var reader = await cmd.ExecuteReaderAsync();
 
         Console.WriteLine("Lediga rum");
+        List<long> availableRooms = new List<long>();
+        
         while (await reader.ReadAsync())
         {
-            Console.WriteLine(
-                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)} Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
+            long accommodationId = reader.GetInt64(0);
+            string country = reader.GetString(1);
+            string hotelName = reader.GetString(2);
+            int numberOfBeds = reader.GetInt32(3);
+            double price = reader.GetDouble(4);
+
+            Console.WriteLine($"ID: {accommodationId}, Land: {country}, Hotell: {hotelName}, Sängar: {numberOfBeds}, Pris: {price}");
+            availableRooms.Add(accommodationId);
+        }
+
+        if (availableRooms.Count > 0)
+        {
+            Console.WriteLine("Välj ett rum med ID: ");
+            long selectedRoomId = long.Parse(Console.ReadLine() ?? "0");
+
+            if (availableRooms.Contains(selectedRoomId))
+            {
+                // skickar vidare det valda rummet och datum till AddRoomAndOptions
+                AddRoomAndOptions(selectedRoomId, startDate, endDate);
+            }
+            else
+            {
+                Console.WriteLine("Ogiltigt rum-ID");
+            }
+        }
+        else
+        {
+            Console.WriteLine("Inga lediga rum hittades.");
         }
     }
 
-    public async void AddRoomAndOptions()
+    public async void AddRoomAndOptions(long accommodationId, DateTime startDate, DateTime endDate)
     {
         Console.WriteLine("Enter your customer ID: ");
         long? customerId = long.Parse(Console.ReadLine());
-        
-        Console.WriteLine("Choose your room (enter ID)");
-        long? accommodationId = long.Parse(Console.ReadLine());
-
-        Console.WriteLine("Do you want an extra bed? (yes/no): ");
-        bool extraBed = Console.ReadLine()?.ToLower() == "yes";
 
         Console.WriteLine("Do you want full pension? (yes/no): ");
-        bool fullBoard = Console.ReadLine()?.ToLower() == "yes";
+        bool fullBoard = (Console.ReadLine()?.ToLower() ?? "no") == "yes";
 
         Console.WriteLine("Do you want half pension? (yes/no): ");
-        bool halfBoard = Console.ReadLine()?.ToLower() == "yes";
+        bool halfBoard = (Console.ReadLine()?.ToLower() ?? "no") == "yes";
+        
+        Console.WriteLine("Do you want an extra bed? (yes/no): ");
+        bool extraBed = (Console.ReadLine()?.ToLower() ?? "no") == "yes";
+        
+        // Hämta rumspris för valt rum
+        double roomPrice = await GetRoomPrice(accommodationId);
+        
+        // Beräkna rumspris för valt rum
+        double totalPrice = roomPrice;
+        if (fullBoard) totalPrice += 500;
+        if (halfBoard) totalPrice += 250;
+        if (extraBed) totalPrice += 750;
 
         string query = @"
-            INSERT INTO bookings (customer_id, accommodations_id, extra_bed, full_board, half_board) 
-            VALUES ($1, $2, $3, $4, $5) 
+            INSERT INTO bookings (customer_id, accommodations_id, start_date, end_date, extra_bed, full_board, half_board, booking_price) 
+            VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
             RETURNING id";
         
         await using var cmd = _db.CreateCommand(query);
         cmd.Parameters.AddWithValue(customerId);
         cmd.Parameters.AddWithValue(accommodationId);
+        cmd.Parameters.AddWithValue(startDate);
+        cmd.Parameters.AddWithValue(endDate);
         cmd.Parameters.AddWithValue(extraBed);
         cmd.Parameters.AddWithValue(fullBoard);
         cmd.Parameters.AddWithValue(halfBoard);
+        cmd.Parameters.AddWithValue(totalPrice);
+        
         var bookingId = (long)await cmd.ExecuteScalarAsync();
 
         Console.WriteLine($"Rooms and extra choices saved into booking ID: {bookingId}");
+    }
+
+    public async Task<double> GetRoomPrice(long accommodationId)
+    {
+        string query = "SELECT price FROM accommodations WHERE id = $1";
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(accommodationId);
+
+        var result = await cmd.ExecuteScalarAsync();
+        return result != null ? Convert.ToDouble(result) : 0.0;
     }
 
     public async void SaveBooking()
