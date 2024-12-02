@@ -11,45 +11,7 @@ public class Actions
     {
         _db = db;
     }
-
-    public async void ListAll()
-    {
-        await using (var cmd = _db.CreateCommand("SELECT * FROM customers"))
-        await using (var reader = await cmd.ExecuteReaderAsync())
-        {
-            while (await reader.ReadAsync())
-            {
-                Console.WriteLine($"id: {reader.GetInt32(0)} \t name: {reader.GetString(1)}");
-            }
-        }
-    }
-
-    public async void ShowOne(string id)
-    {
-        await using (var cmd = _db.CreateCommand("SELECT * FROM items WHERE id = $1"))
-        {
-            cmd.Parameters.AddWithValue(int.Parse(id));
-            await using (var reader = await cmd.ExecuteReaderAsync())
-            {
-                while (await reader.ReadAsync())
-                {
-                    Console.WriteLine(
-                        $"id: {reader.GetInt32(0)} \t name: {reader.GetString(1)} \t slogan: {reader.GetString(2)}");
-                }
-            }
-        }
-    }
-
-    public async void AddOne(string name, string? slogan)
-    {
-        // Insert data
-        await using (var cmd = _db.CreateCommand("INSERT INTO items (name, slogan) VALUES ($1, $2)"))
-        {
-            cmd.Parameters.AddWithValue(name);
-            cmd.Parameters.AddWithValue(slogan);
-            await cmd.ExecuteNonQueryAsync();
-        }
-    }
+    
     public async void RegCustomer()
     {
         Console.WriteLine("Register a new customer\n");
@@ -88,6 +50,90 @@ public class Actions
             
         }
         Console.WriteLine("New customer registered.");
+    }
+    
+    public async void SearchRooms()
+    {
+        Console.WriteLine("Sök lediga rum\n");
+        Console.WriteLine("Från datum: (yyyy-mm-dd)");
+        string? startDate = Console.ReadLine();
+        Console.WriteLine("Till datum: (yyyy-mm-dd)");
+        string? endDate = Console.ReadLine();
+
+        string query = @"
+            SELECT a.id, country, h.name, a.number_of_beds, a.price
+            FROM accommodations a 
+            JOIN hotels h
+            ON h.id = a.hotel_id
+            JOIN locations l 
+            ON h.location_id = l.id
+            WHERE a.id NOT IN (
+                SELECT accommodations_id
+                FROM bookings
+                WHERE (start_date, end_date) OVERLAPS ($1, $2)
+        )";
+
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(DateTime.Parse(startDate));
+        cmd.Parameters.AddWithValue(DateTime.Parse(endDate));
+        await using var reader = await cmd.ExecuteReaderAsync();
+
+        Console.WriteLine("Lediga rum");
+        while (await reader.ReadAsync())
+        {
+            Console.WriteLine(
+                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)} Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
+        }
+    }
+
+    public async void AddRoomAndOptions()
+    {
+        Console.WriteLine("Enter your customer ID: ");
+        long? customerId = long.Parse(Console.ReadLine());
+        
+        Console.WriteLine("Choose your room (enter ID)");
+        long? accommodationId = long.Parse(Console.ReadLine());
+
+        Console.WriteLine("Do you want an extra bed? (yes/no): ");
+        bool extraBed = Console.ReadLine()?.ToLower() == "yes";
+
+        Console.WriteLine("Do you want full pension? (yes/no): ");
+        bool fullBoard = Console.ReadLine()?.ToLower() == "yes";
+
+        Console.WriteLine("Do you want half pension? (yes/no): ");
+        bool halfBoard = Console.ReadLine()?.ToLower() == "yes";
+
+        string query = @"
+            INSERT INTO bookings (customer_id, accommodations_id, extra_bed, full_board, half_board) 
+            VALUES ($1, $2, $3, $4, $5) 
+            RETURNING id";
+        
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(customerId);
+        cmd.Parameters.AddWithValue(accommodationId);
+        cmd.Parameters.AddWithValue(extraBed);
+        cmd.Parameters.AddWithValue(fullBoard);
+        cmd.Parameters.AddWithValue(halfBoard);
+        var bookingId = (long)await cmd.ExecuteScalarAsync();
+
+        Console.WriteLine($"Rooms and extra choices saved into booking ID: {bookingId}");
+    }
+
+    public async void SaveBooking()
+    {
+        Console.WriteLine("Enter customer-ID to booking: ");
+        long customerId = long.Parse(Console.ReadLine());
+
+        Console.WriteLine("Enter booking-ID: ");
+        long bookingId = long.Parse(Console.ReadLine());
+
+        string query = "INSERT INTO booking_customers (booking_id, customer_id) VALUES ($1, $2)";
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(bookingId);
+        cmd.Parameters.AddWithValue(customerId);
+        await cmd.ExecuteNonQueryAsync();
+
+        Console.WriteLine("Booking saved!");
     }
 
     public async void UpdateBooking(string id)
@@ -132,7 +178,12 @@ public class Actions
         Console.WriteLine("Booking canceled.");
     }
 
+  
+        }
+    }
+
+  
+
+   
     
     
-    
-}
