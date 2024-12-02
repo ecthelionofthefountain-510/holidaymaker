@@ -50,7 +50,7 @@ public class Actions
             
             Console.WriteLine($"Kund tillagd med ID: {customerId}");
     }
-    public async void SearchRooms()
+    public async Task SearchRooms()
     {
         Console.WriteLine("Sök lediga rum\n");
         Console.WriteLine("Från datum: (yyyy-mm-dd)");
@@ -58,31 +58,42 @@ public class Actions
         Console.WriteLine("Till datum: (yyyy-mm-dd)");
         string? endDate = Console.ReadLine();
 
-        string query = @"
-            SELECT a.id, country, h.name, a.number_of_beds, a.price
-            FROM accommodations a 
-            JOIN hotels h
-            ON h.id = a.hotel_id
-            JOIN locations l 
-            ON h.location_id = l.id
-            WHERE a.id NOT IN (
-                SELECT accommodations_id
-                FROM bookings
-                WHERE (start_date, end_date) OVERLAPS ($1, $2)
-        )";
+        
+        if (string.IsNullOrWhiteSpace(startDate) || string.IsNullOrWhiteSpace(endDate))
+        {
+            Console.WriteLine("Ogiltigt datum. Försök igen.");
+            return;
+        }
 
+        string query = @"
+   SELECT accommodations.id, country, hotels.name, accommodations.number_of_beds, accommodations.price
+    FROM accommodations
+    JOIN hotels ON hotels.id = accommodations.hotel_id
+    JOIN locations ON hotels.location_id = locations.id
+    LEFT JOIN bookings ON accommodations.id = bookings.accommodations_id
+WHERE
+        (bookings.start_date IS NULL OR bookings.end_date IS NULL)
+        OR (bookings.end_date < @StartDate OR bookings.start_date > @EndDate)
+    GROUP BY accommodations.id, country, hotels.name, accommodations.number_of_beds, accommodations.price;
+    ";
+
+        // Lägg till parametrarna för datum
         await using var cmd = _db.CreateCommand(query);
-        cmd.Parameters.AddWithValue(DateTime.Parse(startDate));
-        cmd.Parameters.AddWithValue(DateTime.Parse(endDate));
+        cmd.Parameters.AddWithValue("@StartDate", DateTime.Parse(startDate));
+        cmd.Parameters.AddWithValue("@EndDate", DateTime.Parse(endDate));
+
         await using var reader = await cmd.ExecuteReaderAsync();
 
-        Console.WriteLine("Lediga rum");
+        Console.WriteLine("Lediga rum:");
         while (await reader.ReadAsync())
         {
             Console.WriteLine(
-                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)} Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
+                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)}, Hotell: {reader.GetString(2)}, Sängar: {reader.GetInt32(3)}, Pris: {reader.GetDouble(4)}");
         }
     }
+
+
+
 
     public async void AddRoomAndOptions()
     {
