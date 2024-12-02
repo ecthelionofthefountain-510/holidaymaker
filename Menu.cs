@@ -18,6 +18,7 @@
 
         private void PrintMenu()
         {
+            
             // Features
             Console.WriteLine("Boka resa");
             Console.WriteLine("1. Registrera kund/kunder");

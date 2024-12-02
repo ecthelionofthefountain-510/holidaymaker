@@ -47,7 +47,7 @@ public class Actions
             cmd.Parameters.AddWithValue(phoneNumber);
             cmd.Parameters.AddWithValue(dateOfBirth);
 
-            var customerId = (long)await cmd.ExecuteNonQueryAsync();
+            var customerId = (long)await cmd.ExecuteScalarAsync();
             
             Console.WriteLine($"Kund tillagd med ID: {customerId}");
     }
