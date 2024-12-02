@@ -90,42 +90,48 @@ public class Actions
         Console.WriteLine("New customer registered.");
     }
 
-    public async void UpdateOne(string id)
+    public async void UpdateBooking(string id)
     {
-        Console.WriteLine("Current entry:");
-        ShowOne(id);
-        Console.WriteLine("Enter updated name (required)");
-        var name = Console.ReadLine(); // required
-        Console.WriteLine("Enter updated slogan");
-        var slogan = Console.ReadLine(); // not required
-        if (name is not null)
+        Console.WriteLine("Enter booking ID to update: ");
+        long bookingId = long.Parse(Console.ReadLine());
+
+        Console.WriteLine("Enter new start date (yyyy-mm-dd): ");
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime startDate))
         {
-            // Update data
-            await using (var cmd = _db.CreateCommand("UPDATE items SET name = $2, slogan = $3 WHERE id = $1"))
-            {
-                cmd.Parameters.AddWithValue(int.Parse(id));
-                cmd.Parameters.AddWithValue(name);
-                cmd.Parameters.AddWithValue(slogan);
-                await cmd.ExecuteNonQueryAsync();
-            }
+            Console.WriteLine("Invalid date format.");
+            return;
         }
+
+        Console.WriteLine("Enter new end date (yyyy-mm-dd): ");
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime endDate))
+        {
+            Console.WriteLine("Invalid date format.");
+            return;
+        }
+
+        string query = "UPDATE bookings SET start_date = $1, end_date = $2 WHERE id = $3";
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(startDate);
+        cmd.Parameters.AddWithValue(endDate);
+        cmd.Parameters.AddWithValue(bookingId);
+
+        await cmd.ExecuteNonQueryAsync();
+        Console.WriteLine("Booking updated!");
     }
 
-    public async void DeleteOne(string id)
+    public async void CancelBooking(string id)
     {
-        // Delete data
-        await using (var cmd = _db.CreateCommand("DELETE FROM items WHERE id = $1"))
-        {
-            cmd.Parameters.AddWithValue(int.Parse(id));
-            await cmd.ExecuteNonQueryAsync();
-        }
+        Console.WriteLine("Enter booking ID to cancel: ");
+        long bookingId = long.Parse(Console.ReadLine());
+
+        string query = "DELETE FROM bookings WHERE id = $1";
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue(bookingId);
+
+        await cmd.ExecuteNonQueryAsync();
+        Console.WriteLine("Booking canceled.");
     }
 
-    public async void ChooseCountry()
-    {
-        Console.WriteLine("vart vill du åka?");
-        
-    }
     
     
     

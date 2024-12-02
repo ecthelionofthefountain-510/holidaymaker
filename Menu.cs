@@ -13,12 +13,13 @@ public class Menu
 
     private void PrintMenu()
     {
-        Console.WriteLine("Choose option");
-        Console.WriteLine("1. Register Customer");
-        Console.WriteLine("2. Show one");
-        Console.WriteLine("3. Välj land");
-        Console.WriteLine("4. Update one");
-        Console.WriteLine("5. Delete one");
+        Console.WriteLine("** Choose option **");
+        Console.WriteLine("1. Register customer");
+        Console.WriteLine("2. Search rooms");
+        Console.WriteLine("3. Add room and options");
+        Console.WriteLine("4. Update booking");
+        Console.WriteLine("5. Cancel booking");
+        Console.WriteLine("6. Save booking");
         Console.WriteLine("9. Quit");
         AskUser();
     }
@@ -44,23 +45,22 @@ public class Menu
                     }
                     break;
                 case ("3"):
-                    _ChooseCountry();
                     
                     break;
                 case("4"):
-                    Console.WriteLine("Enter id to update one");
+                    Console.WriteLine("Enter id to update booking");
                     id = Console.ReadLine();
                     if (id is not null)
                     { 
-                        _actions.UpdateOne(id);
+                        _actions.UpdateBooking(id);
                     }
                     break;
                 case("5"):
-                    Console.WriteLine("Enter id to delete one");
+                    Console.WriteLine("Enter id to cancel a booking");
                     id = Console.ReadLine();
                     if (id is not null)
                     { 
-                        _actions.DeleteOne(id);
+                        _actions.CancelBooking(id);
                     }
                     break;
                 case("9"):
