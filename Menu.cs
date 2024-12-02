@@ -24,7 +24,7 @@ public class Menu
         AskUser();
     }
 
-    private async void AskUser()
+    private async Task AskUser()
     {
         var response = Console.ReadLine();
         if (response is not null)
@@ -37,31 +37,19 @@ public class Menu
                     _actions.RegCustomer();
                     break;
                 case("2"):
-                    Console.WriteLine("Enter id to show details about one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.ShowOne(id);
-                    }
+                    _actions.SearchRooms();
                     break;
-                case ("3"):
-                    
+                case("3"):
+                    _actions.AddRoomAndOptions();
                     break;
                 case("4"):
-                    Console.WriteLine("Enter id to update booking");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.UpdateBooking(id);
-                    }
+                    _actions.UpdateBooking();
                     break;
                 case("5"):
-                    Console.WriteLine("Enter id to cancel a booking");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.CancelBooking(id);
-                    }
+                    _actions.CancelBooking();
+                    break;
+                case("6"):
+                    _actions.SaveBooking();
                     break;
                 case("9"):
                     Console.WriteLine("Quitting");
