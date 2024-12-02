@@ -160,35 +160,7 @@ public class Actions
             }
         } 
     }
-
-
-    /*
-    Console.WriteLine("När vill du åka?");
-    // välj mellan vilka datum
-    // visa hotell (about)
-    // visa hotell distance to beach distance to center
-    Console.WriteLine("Välj hotell");
-    // välj hotell
-    Console.WriteLine("Välj rum");
-    // visa lediga rum
-    // välj rum
-    // välj extra alternativ
-
-
-
-
-
-
-    await using (var cmd = _db.CreateCommand("SELECT * FROM customers"))
-    await using (var reader = await cmd.ExecuteReaderAsync())
-    {
-        while (await reader.ReadAsync())
-        {
-            Console.WriteLine($"id: {reader.GetInt32(0)} \t name: {reader.GetString(1)}");
-        }
-    }*/
-        
-
+    
     public async void ShowOne(string id)
     {
         await using (var cmd = _db.CreateCommand("SELECT * FROM items WHERE id = $1"))
