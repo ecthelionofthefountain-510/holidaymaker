@@ -85,6 +85,7 @@ public class Actions
 
     public async void AddRoomAndOptions()
     {
+        
         Console.WriteLine("Enter your customer ID: ");
         long? customerId = long.Parse(Console.ReadLine());
         
@@ -92,13 +93,13 @@ public class Actions
         long? accommodationId = long.Parse(Console.ReadLine());
 
         Console.WriteLine("Do you want an extra bed? (yes/no): ");
-        bool extraBed = Console.ReadLine()?.ToLower() == "yes";
-
+        bool extraBed = Console.ReadLine()?.ToLower() == "yes" ? true : false;
+        
         Console.WriteLine("Do you want full pension? (yes/no): ");
-        bool fullBoard = Console.ReadLine()?.ToLower() == "yes";
+        bool fullBoard = Console.ReadLine()?.ToLower() == "yes" ? true : false;
 
         Console.WriteLine("Do you want half pension? (yes/no): ");
-        bool halfBoard = Console.ReadLine()?.ToLower() == "yes";
+        bool halfBoard = Console.ReadLine()?.ToLower() == "yes" ? true : false;
 
         string query = @"
             INSERT INTO bookings (customer_id, accommodations_id, extra_bed, full_board, half_board) 
