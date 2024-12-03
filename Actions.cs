@@ -84,15 +84,16 @@ public class Actions
         }
 
         string query = @"
-        SELECT a.id, country, h.name, a.number_of_beds, a.price
-        FROM accommodations a 
-        JOIN hotels h ON h.id = a.hotel_id
-        JOIN locations l ON h.location_id = l.id
-        WHERE a.id NOT IN (
-            SELECT accommodations_id
-            FROM bookings
-            WHERE (start_date, end_date) OVERLAPS ($1, $2)
-        )";
+    SELECT a.id, country, h.name, a.number_of_beds, a.price
+    FROM accommodations a 
+    JOIN hotels h ON h.id = a.hotel_id
+    JOIN locations l ON h.location_id = l.id
+    WHERE a.is_available = TRUE
+    AND a.id NOT IN (
+        SELECT accommodations_id
+        FROM bookings
+        WHERE (start_date, end_date) OVERLAPS ($1, $2)
+    )";
 
         await using var cmd = _db.CreateCommand(query);
         cmd.Parameters.AddWithValue(startDate);
