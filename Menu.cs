@@ -10,26 +10,22 @@ public class Menu
         _actions = actions;
         PrintMenu();
     }
-    /* Menu
-     * 1. Sök efter lediga rum från datum till datum // Ska visa LAND HOTELL RUM TILLGÄNGLIGT
-     *      och välj rum.                // sökningen ska returnera ett id, som används i nästa sökning
-     * 2. V
-     * 
-     */
 
     private void PrintMenu()
     {
-        Console.WriteLine("Choose option");
-        Console.WriteLine("1. Register Customer");
-        Console.WriteLine("2. Show one");
-        Console.WriteLine("3. List countries");
-        Console.WriteLine("4. Update one");
-        Console.WriteLine("5. Delete one");
+        Console.WriteLine("** Choose option **");
+        Console.WriteLine("1. Register customer");
+        Console.WriteLine("2. Search rooms");
+        Console.WriteLine("3. Add room and options");
+        Console.WriteLine("4. Update booking");
+        Console.WriteLine("5. Cancel booking");
+        Console.WriteLine("6. Save booking");
         Console.WriteLine("9. Quit");
+        Console.WriteLine("10. Show booking");
         AskUser();
     }
 
-    private async void AskUser()
+    private async Task AskUser()
     {
         var response = Console.ReadLine();
         if (response is not null)
@@ -40,45 +36,36 @@ public class Menu
             {
                 case("1"):
                     _actions.RegCustomer();
-                    Console.WriteLine("New customer registered.");
                     break;
                 case("2"):
-                    Console.WriteLine("Enter id to show details about one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.ShowOne(id);
-                    }
+                    _actions.SearchRooms();
                     break;
                 case("3"):
-                    Console.WriteLine("Enter name (required)");
-                    var name = Console.ReadLine(); // required
-                    Console.WriteLine("Enter slogan");
-                    var slogan = Console.ReadLine(); // not required
-                    if (name is not null)
-                    {
-                        _actions.AddOne(name, slogan);
-                    }
+                    _actions.AddRoomAndOptions();
                     break;
                 case("4"):
-                    Console.WriteLine("Enter id to update one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.UpdateOne(id);
-                    }
+                    _actions.UpdateBooking();
                     break;
                 case("5"):
-                    Console.WriteLine("Enter id to delete one");
-                    id = Console.ReadLine();
-                    if (id is not null)
-                    { 
-                        _actions.DeleteOne(id);
-                    }
+                    _actions.CancelBooking();
+                    break;
+                case("6"):
+                    _actions.SaveBooking();
                     break;
                 case("9"):
                     Console.WriteLine("Quitting");
                     Environment.Exit(0);
+                    break;
+                case("10"):
+                    Console.Write("Enter Accommodation ID: ");
+                    if (int.TryParse(Console.ReadLine(), out int accommodation_id))
+                    { 
+                        _actions.ShowBooking(accommodation_id); // Call ShowBooking with the parsed ID
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid ID. Please enter a numeric value.");
+                    }
                     break;
             }
 
