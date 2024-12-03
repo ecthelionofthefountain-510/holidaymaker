@@ -221,8 +221,8 @@ public async Task AddRoomAndOptions()
     await using var cmd = _db.CreateCommand(query);
     cmd.Parameters.AddWithValue(customerId);
     cmd.Parameters.AddWithValue(accommodationId);
-    cmd.Parameters.AddWithValue(CurrentStartDate);
-    cmd.Parameters.AddWithValue(CurrentEndDate);
+    cmd.Parameters.AddWithValue(startDate);
+    cmd.Parameters.AddWithValue(endDate);
     cmd.Parameters.AddWithValue(extraBed);
     cmd.Parameters.AddWithValue(fullBoard);
     cmd.Parameters.AddWithValue(halfBoard);
