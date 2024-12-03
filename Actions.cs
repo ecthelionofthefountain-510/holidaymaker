@@ -83,12 +83,21 @@ public class Actions
             return;
         }
 
+        Console.WriteLine("Enter max distance to beach: (50-2000)");
+        int distanceToBeachInput = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Enter max distance to center: (50-1200)");
+        int distanceToCenterInput = int.Parse(Console.ReadLine());
+        
+        
+
         string query = @"
-    SELECT a.id, country, h.name, a.number_of_beds, a.price
+    SELECT a.id, country, h.name, a.number_of_beds, a.price, h.distance_to_beach, h.distance_to_center
     FROM accommodations a 
     JOIN hotels h ON h.id = a.hotel_id
     JOIN locations l ON h.location_id = l.id
     WHERE a.is_available = TRUE
+    AND distance_to_beach <=     
     AND a.id NOT IN (
         SELECT accommodations_id
         FROM bookings
@@ -98,6 +107,8 @@ public class Actions
         await using var cmd = _db.CreateCommand(query);
         cmd.Parameters.AddWithValue(startDate);
         cmd.Parameters.AddWithValue(endDate);
+        cmd.Parameters.AddWithValue(distanceToBeachInput);
+        cmd.Parameters.AddWithValue(distanceToCenterInput);
 
         await using var reader = await cmd.ExecuteReaderAsync();
         bool roomsFound = false;
