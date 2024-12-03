@@ -5,6 +5,10 @@
 public class Menu
 {
     Actions _actions;
+    private int? _currentCustomerId;
+    private int? _currentRoomId;
+    private DateTime? _currentStartDate;
+    private DateTime? _currentEndDate;
     public Menu(Actions actions)
     {
         _actions = actions;
@@ -39,6 +43,8 @@ public class Menu
                     break;
                 case("2"):
                     _actions.SearchRooms();
+                    _currentStartDate = _actions.CurrentStartDate;
+                    _currentEndDate = _actions.CurrentEndDate;
                     break;
                 case("3"):
                     _actions.AddRoomAndOptions();
@@ -72,6 +78,13 @@ public class Menu
             PrintMenu();
         }
         
+    }
+    private void ShowCurrentState()
+    {
+        Console.WriteLine($"Aktuell kund-ID: {_currentCustomerId}");
+        Console.WriteLine($"Valt rum-ID: {_currentRoomId}");
+        Console.WriteLine($"Startdatum: {_currentStartDate:yyyy-MM-dd}");
+        Console.WriteLine($"Slutdatum: {_currentEndDate:yyyy-MM-dd}");
     }
     
 }

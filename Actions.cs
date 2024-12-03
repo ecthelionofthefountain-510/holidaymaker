@@ -6,6 +6,10 @@ namespace holidaymaker;
 public class Actions
 {
     NpgsqlDataSource _db;
+    public long? CurrentCustomerId { get; private set; }
+    public long? CurrentRoomId { get; private set; }
+    public DateTime? CurrentStartDate { get; private set; }
+    public DateTime? CurrentEndDate { get; private set; }
 
     public Actions(NpgsqlDataSource db)
     {
@@ -62,12 +66,16 @@ public class Actions
         return;
     }
 
+    CurrentStartDate = startDate;
+
     Console.WriteLine("Enter end date (yyyy-mm-dd): ");
     if (!DateTime.TryParse(Console.ReadLine(), out DateTime endDate))
     {
         Console.WriteLine("Invalid end date format. Please try again.");
         return;
     }
+
+    CurrentEndDate = endDate;
 
     Console.WriteLine("Enter max distance to beach: (50-2000)");
     if (!int.TryParse(Console.ReadLine(), out int distanceToBeach) || distanceToBeach < 50 || distanceToBeach > 2000)
@@ -110,12 +118,12 @@ public class Actions
     await using var reader = await cmd.ExecuteReaderAsync();
     bool roomsFound = false;
 
-    Console.WriteLine("Available rooms:");
+    Console.WriteLine("Available rooms:\n");
     while (await reader.ReadAsync())
     {
         roomsFound = true;
         Console.WriteLine(
-            $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)}, Hotel: {reader.GetString(2)}, Beds: {reader.GetInt32(3)}, Price: {reader.GetDouble(4)}, Distance to beach: {reader.GetInt32(5)}m, Distance to center: {reader.GetInt32(6)}m");
+            $"ID: {reader.GetInt64(0), -5} Country: {reader.GetString(1), -15} Hotel: {reader.GetString(2), -25} Beds: {reader.GetInt32(3), -5} Price: {reader.GetDouble(4), -10} Distance to beach (m): {reader.GetInt32(5), -15} Distance to center (m): {reader.GetInt32(6), -15}");
     }
 
     if (!roomsFound)
@@ -126,7 +134,8 @@ public class Actions
 
     public async void ShowBooking(int accommodations_id)
     {
-        string query = @" SELECT h.name, b.start_date, b.end_date, b.booking_price, b.half_board, b.full_board, b.extra_bed
+        string query =
+            @" SELECT h.name, b.start_date, b.end_date, b.booking_price, b.half_board, b.full_board, b.extra_bed
         FROM bookings b 
         JOIN accommodations a ON b.accommodations_id = a.id
         JOIN hotels h ON a.hotel_id = h.id
@@ -165,6 +174,7 @@ public class Actions
     
 public async Task AddRoomAndOptions()
 {
+    
     Console.WriteLine("Enter your customer ID: ");
     if (!long.TryParse(Console.ReadLine(), out long customerId))
     {
@@ -179,6 +189,7 @@ public async Task AddRoomAndOptions()
         return;
     }
 
+   
     Console.WriteLine("Enter start date (yyyy-mm-dd): ");
     if (!DateTime.TryParse(Console.ReadLine(), out DateTime startDate))
     {
@@ -210,14 +221,15 @@ public async Task AddRoomAndOptions()
     await using var cmd = _db.CreateCommand(query);
     cmd.Parameters.AddWithValue(customerId);
     cmd.Parameters.AddWithValue(accommodationId);
-    cmd.Parameters.AddWithValue(startDate);
-    cmd.Parameters.AddWithValue(endDate);
+    cmd.Parameters.AddWithValue(CurrentStartDate);
+    cmd.Parameters.AddWithValue(CurrentEndDate);
     cmd.Parameters.AddWithValue(extraBed);
     cmd.Parameters.AddWithValue(fullBoard);
     cmd.Parameters.AddWithValue(halfBoard);
 
     var bookingId = (long)await cmd.ExecuteScalarAsync();
     Console.WriteLine($"Room and options saved with booking ID: {bookingId}");
+    
 }
 
   
@@ -280,7 +292,7 @@ public async Task AddRoomAndOptions()
 
         Console.WriteLine("Booking saved!");
     }
-  
+    
 }
   
 
