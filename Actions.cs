@@ -66,66 +66,76 @@ public class Actions
     }
     
     public async Task SearchRooms()
+{
+    Console.WriteLine("Search available rooms\n");
+
+    Console.WriteLine("Enter start date (yyyy-mm-dd): ");
+    if (!DateTime.TryParse(Console.ReadLine(), out DateTime startDate))
     {
-        Console.WriteLine("Search available rooms\n");
-
-        Console.WriteLine("Enter start date (yyyy-mm-dd): ");
-        if (!DateTime.TryParse(Console.ReadLine(), out DateTime startDate))
-        {
-            Console.WriteLine("Invalid start date format. Please try again.");
-            return;
-        }
-
-        Console.WriteLine("Enter end date (yyyy-mm-dd): ");
-        if (!DateTime.TryParse(Console.ReadLine(), out DateTime endDate))
-        {
-            Console.WriteLine("Invalid end date format. Please try again.");
-            return;
-        }
-
-        Console.WriteLine("Enter max distance to beach: (50-2000)");
-        int distanceToBeachInput = int.Parse(Console.ReadLine());
-
-        Console.WriteLine("Enter max distance to center: (50-1200)");
-        int distanceToCenterInput = int.Parse(Console.ReadLine());
-        
-        
-
-        string query = @"
-    SELECT a.id, country, h.name, a.number_of_beds, a.price, h.distance_to_beach, h.distance_to_center
-    FROM accommodations a 
-    JOIN hotels h ON h.id = a.hotel_id
-    JOIN locations l ON h.location_id = l.id
-    WHERE a.is_available = TRUE
-    AND distance_to_beach <=     
-    AND a.id NOT IN (
-        SELECT accommodations_id
-        FROM bookings
-        WHERE (start_date, end_date) OVERLAPS ($1, $2)
-    )";
-
-        await using var cmd = _db.CreateCommand(query);
-        cmd.Parameters.AddWithValue(startDate);
-        cmd.Parameters.AddWithValue(endDate);
-        cmd.Parameters.AddWithValue(distanceToBeachInput);
-        cmd.Parameters.AddWithValue(distanceToCenterInput);
-
-        await using var reader = await cmd.ExecuteReaderAsync();
-        bool roomsFound = false;
-
-        Console.WriteLine("Available rooms:");
-        while (await reader.ReadAsync())
-        {
-            roomsFound = true;
-            Console.WriteLine(
-                $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)}, Hotel: {reader.GetString(2)}, Beds: {reader.GetInt32(3)}, Price: {reader.GetDouble(4)}");
-        }
-
-        if (!roomsFound)
-        {
-            Console.WriteLine("No rooms available for the selected dates.");
-        }
+        Console.WriteLine("Invalid start date format. Please try again.");
+        return;
     }
+
+    Console.WriteLine("Enter end date (yyyy-mm-dd): ");
+    if (!DateTime.TryParse(Console.ReadLine(), out DateTime endDate))
+    {
+        Console.WriteLine("Invalid end date format. Please try again.");
+        return;
+    }
+
+    Console.WriteLine("Enter max distance to beach: (50-2000)");
+    if (!int.TryParse(Console.ReadLine(), out int distanceToBeach) || distanceToBeach < 50 || distanceToBeach > 2000)
+    {
+        Console.WriteLine("Invalid distance to beach. Please enter a value between 50 and 2000.");
+        return;
+    }
+
+    Console.WriteLine("Enter max distance to center: (50-1200)");
+    if (!int.TryParse(Console.ReadLine(), out int distanceToCenter) || distanceToCenter < 50 || distanceToCenter > 1200)
+    {
+        Console.WriteLine("Invalid distance to center. Please enter a value between 50 and 1200.");
+        return;
+    }
+    
+    Console.WriteLine($"Max distance to beach: {distanceToBeach}m");
+    Console.WriteLine($"Max distance to center: {distanceToCenter}m");
+
+    string query = @"
+        SELECT a.id, country, h.name, a.number_of_beds, a.price, h.distance_to_beach, h.distance_to_center
+        FROM accommodations a 
+        JOIN hotels h ON h.id = a.hotel_id
+        JOIN locations l ON h.location_id = l.id
+        WHERE a.is_available = TRUE
+        AND h.distance_to_beach <= @distanceToBeach
+        AND h.distance_to_center <= @distanceToCenter
+        AND a.id NOT IN (
+            SELECT accommodations_id
+            FROM bookings
+            WHERE (start_date, end_date) OVERLAPS (@startDate, @endDate)
+        )";
+
+    await using var cmd = _db.CreateCommand(query);
+    cmd.Parameters.AddWithValue("@startDate", startDate);
+    cmd.Parameters.AddWithValue("@endDate", endDate);
+    cmd.Parameters.AddWithValue("@distanceToBeach", distanceToBeach);
+    cmd.Parameters.AddWithValue("@distanceToCenter", distanceToCenter);
+
+    await using var reader = await cmd.ExecuteReaderAsync();
+    bool roomsFound = false;
+
+    Console.WriteLine("Available rooms:");
+    while (await reader.ReadAsync())
+    {
+        roomsFound = true;
+        Console.WriteLine(
+            $"ID: {reader.GetInt64(0)}, Country: {reader.GetString(1)}, Hotel: {reader.GetString(2)}, Beds: {reader.GetInt32(3)}, Price: {reader.GetDouble(4)}, Distance to beach: {reader.GetInt32(5)}m, Distance to center: {reader.GetInt32(6)}m");
+    }
+
+    if (!roomsFound)
+    {
+        Console.WriteLine("No rooms available for the selected dates.");
+    }
+}
 
 public async Task AddRoomAndOptions()
 {
