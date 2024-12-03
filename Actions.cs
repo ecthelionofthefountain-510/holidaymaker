@@ -105,6 +105,7 @@ public class Actions
         FROM accommodations a 
         JOIN hotels h ON h.id = a.hotel_id
         JOIN locations l ON h.location_id = l.id
+        
         WHERE a.is_available = TRUE
         AND h.distance_to_beach <= @distanceToBeach
         AND h.distance_to_center <= @distanceToCenter
@@ -112,7 +113,7 @@ public class Actions
             SELECT accommodations_id
             FROM bookings
             WHERE (start_date, end_date) OVERLAPS (@startDate, @endDate)
-        )";
+        )ORDER BY a.price ASC";
 
     await using var cmd = _db.CreateCommand(query);
     cmd.Parameters.AddWithValue("@startDate", startDate);
@@ -137,6 +138,45 @@ public class Actions
     }
 }
 
+    public async void ShowBooking(int accommodations_id)
+    {
+        string query = @" SELECT h.name, b.start_date, b.end_date, b.booking_price, b.half_board, b.full_board, b.extra_bed
+        FROM bookings b 
+        JOIN accommodations a ON b.accommodations_id = a.id
+        JOIN hotels h ON a.hotel_id = h.id
+        WHERE a.id = @accommodations_id";
+        
+        
+        // Skapa och konfigurera kommandot
+        await using var cmd = _db.CreateCommand(query);
+        cmd.Parameters.AddWithValue("@accommodations_id", accommodations_id); // Binda accommodationId till parameter $1
+
+        // Kör frågan och läs resultaten
+        await using var reader = await cmd.ExecuteReaderAsync();
+        Console.WriteLine("Bokningar för vald boende:");
+
+        bool hasResults = false;
+
+        while (await reader.ReadAsync())
+        {
+            hasResults = true;
+            Console.WriteLine(
+                $"Hotel: {reader.GetString(0)}, " +
+                $"Start Date: {reader.GetDateTime(1).ToShortDateString()}, " +
+                $"End Date: {reader.GetDateTime(2).ToShortDateString()}, " +
+                $"Price: {reader.GetDecimal(3)}, " +
+                $"Half Board: {reader.GetBoolean(4)}, " +
+                $"Full Board: {reader.GetBoolean(5)}, " +
+                $"Extra Bed: {reader.GetBoolean(6)}");
+        }
+
+        if (!hasResults)
+        {
+            Console.WriteLine("Inga bokningar hittades för detta boende.");
+        }
+    }
+    
+    
 public async Task AddRoomAndOptions()
 {
     Console.WriteLine("Enter your customer ID: ");

@@ -21,6 +21,7 @@ public class Menu
         Console.WriteLine("5. Cancel booking");
         Console.WriteLine("6. Save booking");
         Console.WriteLine("9. Quit");
+        Console.WriteLine("10. Show booking");
         AskUser();
     }
 
@@ -54,6 +55,17 @@ public class Menu
                 case("9"):
                     Console.WriteLine("Quitting");
                     Environment.Exit(0);
+                    break;
+                case("10"):
+                    Console.Write("Enter Accommodation ID: ");
+                    if (int.TryParse(Console.ReadLine(), out int accommodation_id))
+                    { 
+                        _actions.ShowBooking(accommodation_id); // Call ShowBooking with the parsed ID
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid ID. Please enter a numeric value.");
+                    }
                     break;
             }
 
