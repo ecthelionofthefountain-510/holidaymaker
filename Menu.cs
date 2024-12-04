@@ -17,15 +17,21 @@ public class Menu
 
     private void PrintMenu()
     {
-        Console.WriteLine("** Choose option **");
-        Console.WriteLine("1. Register customer");
-        Console.WriteLine("2. Search rooms");
-        Console.WriteLine("3. Add room and options");
-        Console.WriteLine("4. Update booking");
-        Console.WriteLine("5. Cancel booking");
-        Console.WriteLine("6. Save booking");
-        Console.WriteLine("9. Quit");
-        Console.WriteLine("10. Show booking");
+        Console.WriteLine("**************************************");
+        Console.WriteLine("**                                  **");
+        Console.WriteLine("** WELCOME TO BOOKINGSIMULATOR 3000 **");
+        Console.WriteLine("**                                  **");
+        Console.WriteLine("**          Choose a number         **");
+        Console.WriteLine("**       1. Register customer       **");
+        Console.WriteLine("**       2. Search rooms            **");
+        Console.WriteLine("**       3. Add room and options    **");
+        Console.WriteLine("**       4. Update booking          **");
+        Console.WriteLine("**       5. Cancel booking          **");
+        Console.WriteLine("**       6. Save booking            **");
+        Console.WriteLine("**       9. Quit                    **");
+        Console.WriteLine("**       10. Show booking           **");
+        Console.WriteLine("**                                  **");
+        Console.WriteLine("**************************************");
         AskUser();
     }
 
@@ -39,6 +45,7 @@ public class Menu
             switch (response)
             {
                 case("1"):
+                    Console.Clear();
                     _actions.RegCustomer();
                     break;
                 case("2"):
