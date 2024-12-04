@@ -17,22 +17,23 @@ public class Menu
 
     private void PrintMenu()
     {
-        Console.WriteLine("**************************************");
-        Console.WriteLine("** //////////////////////////////// **");
-        Console.WriteLine("** WELCOME TO BOOKINGSIMULATOR 3000 **");
-        Console.WriteLine("**                                  **");
-        Console.WriteLine("**          Choose a number         **");
-        Console.WriteLine("**       1. Register customer       **");
-        Console.WriteLine("**       2. Search rooms            **");
-        Console.WriteLine("**       3. Add room and options    **");
-        Console.WriteLine("**       4. Update booking          **");
-        Console.WriteLine("**       5. Cancel booking          **");
-        Console.WriteLine("**       6. Save booking            **");
-        Console.WriteLine("**       9. Show booking            **");
-        Console.WriteLine("**       10. Quit                   **");
-        Console.WriteLine("**                                  **");
-        Console.WriteLine("** //////////////////////////////// **");
-        Console.WriteLine("**************************************");
+        Console.WriteLine("\x1b[38;5;32m**************************************\x1b[0m"); // Mjuk grön för ramen
+        Console.WriteLine("\x1b[38;5;32m** \x1b[38;5;39m///////////////////////////////\x1b[38;5;32m  **\x1b[0m"); // Mjuk blå för linjerna
+        Console.WriteLine("\x1b[40;5;32m** \x1b[38;5;45m      BOOKING SIMULATOR 3000    \x1b[40;5;32m **\x1b[0m"); // Mörkblå för rubriktext
+        Console.WriteLine("\x1b[38;5;32m**                                  **\x1b[0m"); 
+        Console.WriteLine("\x1b[38;5;32m**          \x1b[38;5;208mChoose a number         \x1b[38;5;32m**\x1b[0m"); // Mjuk orange för instruktioner
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m1. Register customer       \x1b[38;5;32m**\x1b[0m"); // Mjuk blå för alternativen
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m2. Search rooms            \x1b[38;5;32m**\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m3. Add room and options    \x1b[38;5;32m**\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m4. Update booking          \x1b[38;5;32m**\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m5. Cancel booking          \x1b[38;5;32m**\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m6. Save booking            \x1b[38;5;32m**\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m7. Show booking            \x1b[38;5;32m**\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;190m8. Quit                   \x1b[38;5;32m**\x1b[0m"); // Röd för avslutning
+        Console.WriteLine("\x1b[38;5;32m**                                  **\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m** \x1b[38;5;39m///////////////////////////////\x1b[38;5;32m  **\x1b[0m");
+        Console.WriteLine("\x1b[38;5;32m**************************************\x1b[0m");
+
         AskUser();
     }
 
@@ -71,7 +72,7 @@ public class Menu
                     Console.Clear();
                     _actions.SaveBooking();
                     break;
-                case("9"):
+                case("7"):
                     Console.Clear();
                     Console.Write("Enter Accommodation ID: ");
                     if (int.TryParse(Console.ReadLine(), out int accommodation_id))
@@ -83,7 +84,7 @@ public class Menu
                         Console.WriteLine("Invalid ID. Please enter a numeric value.");
                     }
                     break;
-                case("10"):
+                case("8"):
                     Console.Clear();
                     Console.WriteLine("Quitting");
                     Environment.Exit(0);
