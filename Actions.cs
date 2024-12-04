@@ -266,22 +266,40 @@ public async Task AddRoomAndOptions()
         }
     }
     
+    string priceQuery = @"
+    SELECT a.price + h.price AS booking_price
+    FROM accommodations a
+    JOIN hotels h ON a.hotel_id = h.id
+    WHERE a.id = $1";
+    
+    await using var priceCmd = _db.CreateCommand(priceQuery);
+    priceCmd.Parameters.AddWithValue("$1", accommodationId);
+    
+    object? result = await priceCmd.ExecuteScalarAsync();
+    if (result == null || !(result is double bookingPrice))
+    {
+        Console.WriteLine("Failed to retrieve the booking price. Please try again.");
+        return;
+    }
+    
     string query = @"
-        INSERT INTO bookings (customer_id, accommodations_id, start_date, end_date, extra_bed, full_board, half_board) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7) 
+        INSERT INTO bookings (customer_id, accommodations_id, start_date, end_date, booking_price, extra_bed, full_board, half_board) 
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
         RETURNING id";
 
     await using var cmd = _db.CreateCommand(query);
-    cmd.Parameters.AddWithValue(customerId);
-    cmd.Parameters.AddWithValue(accommodationId);
-    cmd.Parameters.AddWithValue(startDate);
-    cmd.Parameters.AddWithValue(endDate);
-    cmd.Parameters.AddWithValue(extraBed);
-    cmd.Parameters.AddWithValue(fullBoard);
-    cmd.Parameters.AddWithValue(halfBoard);
+    cmd.Parameters.AddWithValue("$1", customerId);
+    cmd.Parameters.AddWithValue("$2", accommodationId);
+    cmd.Parameters.AddWithValue("$3", startDate);
+    cmd.Parameters.AddWithValue("$4", endDate);
+    cmd.Parameters.AddWithValue("$5", bookingPrice);
+    cmd.Parameters.AddWithValue("$6", extraBed);
+    cmd.Parameters.AddWithValue("$7", fullBoard);
+    cmd.Parameters.AddWithValue("$8", halfBoard);
+    
 
     var bookingId = (long)await cmd.ExecuteScalarAsync();
-    Console.WriteLine($"Room and options saved with booking ID: {bookingId}");
+    Console.WriteLine($"Room and options saved with booking ID: {bookingId}, Total Price: {bookingPrice}");
     
 }
 
