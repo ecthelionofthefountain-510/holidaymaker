@@ -29,7 +29,7 @@ public class Menu
         Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m5. Cancel booking          \x1b[38;5;32m**\x1b[0m");
         Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m6. Save booking            \x1b[38;5;32m**\x1b[0m");
         Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;39m7. Show booking            \x1b[38;5;32m**\x1b[0m");
-        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;190m8. Quit                   \x1b[38;5;32m**\x1b[0m"); // Röd för avslutning
+        Console.WriteLine("\x1b[38;5;32m**       \x1b[38;5;190m8. Quit                    \x1b[38;5;32m**\x1b[0m"); // Röd för avslutning
         Console.WriteLine("\x1b[38;5;32m**                                  **\x1b[0m");
         Console.WriteLine("\x1b[38;5;32m** \x1b[38;5;39m///////////////////////////////\x1b[38;5;32m  **\x1b[0m");
         Console.WriteLine("\x1b[38;5;32m**************************************\x1b[0m");
