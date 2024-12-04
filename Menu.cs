@@ -49,27 +49,34 @@ public class Menu
                     _actions.RegCustomer();
                     break;
                 case("2"):
+                    Console.Clear();
                     _actions.SearchRooms();
                     _currentStartDate = _actions.CurrentStartDate;
                     _currentEndDate = _actions.CurrentEndDate;
                     break;
                 case("3"):
+                    Console.Clear();
                     _actions.AddRoomAndOptions();
                     break;
                 case("4"):
+                    Console.Clear();
                     _actions.UpdateBooking();
                     break;
                 case("5"):
+                    Console.Clear();
                     _actions.CancelBooking();
                     break;
                 case("6"):
+                    Console.Clear();
                     _actions.SaveBooking();
                     break;
                 case("9"):
+                    Console.Clear();
                     Console.WriteLine("Quitting");
                     Environment.Exit(0);
                     break;
                 case("10"):
+                    Console.Clear();
                     Console.Write("Enter Accommodation ID: ");
                     if (int.TryParse(Console.ReadLine(), out int accommodation_id))
                     { 
