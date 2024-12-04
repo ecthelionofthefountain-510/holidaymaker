@@ -263,10 +263,8 @@ public async Task AddRoomAndOptions()
     
     await using var priceCmd = _db.CreateCommand(priceQuery);
     priceCmd.Parameters.AddWithValue("@accommodationId", accommodationId);
-    Console.WriteLine("Executing price query...");
     
     object? result = await priceCmd.ExecuteScalarAsync();
-    Console.WriteLine("price query executed");
     if (result == null || !(result is double bookingPrice))
     {
         Console.WriteLine("Failed to retrieve the booking price. Please try again.");
