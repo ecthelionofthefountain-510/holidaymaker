@@ -173,7 +173,7 @@ public class Actions
     }
     
     
-public async Task AddRoomAndOptions()
+public async void AddRoomAndOptions()
 {
     
     Console.WriteLine("Enter your customer ID: ");
@@ -205,6 +205,25 @@ public async Task AddRoomAndOptions()
         return;
     }
     
+    // Kontrollera om rummet är upptaget
+    string availabilityQuery = @"
+    SELECT COUNT(*)
+    FROM bookings
+    WHERE accommodations_id = @accommodationId
+      AND (@startDate < end_date AND @endDate > start_date)";
+    
+    await using var availabilityCmd = _db.CreateCommand(availabilityQuery);
+    availabilityCmd.Parameters.AddWithValue("@accommodationId", accommodationId);
+    availabilityCmd.Parameters.AddWithValue("@startDate", startDate);
+    availabilityCmd.Parameters.AddWithValue("@endDate", endDate);
+
+    var existingBookings = (long)await availabilityCmd.ExecuteScalarAsync();
+    if (existingBookings > 0)
+    {
+        Console.WriteLine("The room is occupied on the selected dates. Please choose another room.");
+        return;
+    }
+
     
     Console.WriteLine("Do you want an extra bed? (yes/no): ");
     string userInput = Console.ReadLine();
