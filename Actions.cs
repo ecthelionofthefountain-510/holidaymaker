@@ -206,76 +206,67 @@ public async Task AddRoomAndOptions()
     }
     
     
-
-    
     Console.WriteLine("Do you want an extra bed? (yes/no): ");
     string userInput = Console.ReadLine();
-    bool extraBed;
-    
-    switch (userInput)
+    bool extraBed = userInput.ToLower() switch
     {
-        case "yes":
-            extraBed = true;
-            break;
-        case "no":
-            extraBed = false;
-            break;
-        default:
-            Console.WriteLine("Invalid input. Defaulting to no extra bed.");
-            extraBed = false;
-            break;
-    } ;
+        "yes" => true,
+        "no" => false,
+        _ => false
+    };
+
+    if (userInput.ToLower() != "yes" && userInput.ToLower() != "no")
+    {
+        Console.WriteLine("Invalid input. Defaulting to no extra bed.");
+    }
 
     Console.WriteLine("Do you want full pension? (yes/no): ");
     string fullPensionInput = Console.ReadLine();
-    bool fullBoard;
-
-    switch (fullPensionInput)
+    bool fullBoard = fullPensionInput.ToLower() switch
     {
-        case "yes":
-            fullBoard = true;
-            break;
-        case "no":
-            fullBoard = false;
-            break;
-        default:
-            Console.WriteLine("Invalid input. Defaulting to no full pension.");
-            fullBoard = false;
-            break;
+        "yes" => true,
+        "no" => false,
+        _ => false
+    };
+
+    if (fullPensionInput.ToLower() != "yes" && fullPensionInput.ToLower() != "no")
+    {
+        Console.WriteLine("Invalid input. Defaulting to no full pension.");
     }
 
+// Hantera "half pension" bara om full pension är "no"
     bool halfBoard = false;
-    if (fullPensionInput == "no")
+    if (!fullBoard)
     {
         Console.WriteLine("Do you want half pension? (yes/no): ");
         string halfBoardInput = Console.ReadLine();
-        
-        
-        switch (halfBoardInput)
+        halfBoard = halfBoardInput.ToLower() switch
         {
-            case "yes":
-                halfBoard = true;
-                break;
-            case "no":
-                halfBoard = false;
-                break;
-            default:
-                Console.WriteLine("Invalid input. Defaulting to no full pension.");
-                halfBoard = false;
-                break;
+            "yes" => true,
+            "no" => false,
+            _ => false
+        };
+
+        if (halfBoardInput.ToLower() != "yes" && halfBoardInput.ToLower() != "no")
+        {
+            Console.WriteLine("Invalid input. Defaulting to no half pension.");
         }
     }
+
+    Console.WriteLine($"Extra Bed: {extraBed}, Full Pension: {fullBoard}, Half Pension: {halfBoard}");
     
     string priceQuery = @"
     SELECT a.price + h.price AS booking_price
     FROM accommodations a
     JOIN hotels h ON a.hotel_id = h.id
-    WHERE a.id = $1";
+    WHERE a.id = @accommodationId";
     
     await using var priceCmd = _db.CreateCommand(priceQuery);
-    priceCmd.Parameters.AddWithValue("$1", accommodationId);
+    priceCmd.Parameters.AddWithValue("@accommodationId", accommodationId);
+    Console.WriteLine("Executing price query...");
     
     object? result = await priceCmd.ExecuteScalarAsync();
+    Console.WriteLine("price query executed");
     if (result == null || !(result is double bookingPrice))
     {
         Console.WriteLine("Failed to retrieve the booking price. Please try again.");
@@ -284,23 +275,21 @@ public async Task AddRoomAndOptions()
     
     string query = @"
         INSERT INTO bookings (customer_id, accommodations_id, start_date, end_date, booking_price, extra_bed, full_board, half_board) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8) 
+        VALUES (@customerId, @accommodationId, @startDate, @endDate, @bookingPrice, @extraBed, @fullBoard, @halfBoard) 
         RETURNING id";
 
     await using var cmd = _db.CreateCommand(query);
-    cmd.Parameters.AddWithValue("$1", customerId);
-    cmd.Parameters.AddWithValue("$2", accommodationId);
-    cmd.Parameters.AddWithValue("$3", startDate);
-    cmd.Parameters.AddWithValue("$4", endDate);
-    cmd.Parameters.AddWithValue("$5", bookingPrice);
-    cmd.Parameters.AddWithValue("$6", extraBed);
-    cmd.Parameters.AddWithValue("$7", fullBoard);
-    cmd.Parameters.AddWithValue("$8", halfBoard);
-    
+    cmd.Parameters.AddWithValue("@customerId", customerId);
+    cmd.Parameters.AddWithValue("@accommodationId", accommodationId);
+    cmd.Parameters.AddWithValue("@startDate", startDate);
+    cmd.Parameters.AddWithValue("@endDate", endDate);
+    cmd.Parameters.AddWithValue("@bookingPrice", bookingPrice);
+    cmd.Parameters.AddWithValue("@extraBed", extraBed);
+    cmd.Parameters.AddWithValue("@fullBoard", fullBoard);
+    cmd.Parameters.AddWithValue("@halfBoard", halfBoard);
 
     var bookingId = (long)await cmd.ExecuteScalarAsync();
     Console.WriteLine($"Room and options saved with booking ID: {bookingId}, Total Price: {bookingPrice}");
-    
 }
 
   

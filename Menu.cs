@@ -18,7 +18,7 @@ public class Menu
     private void PrintMenu()
     {
         Console.WriteLine("**************************************");
-        Console.WriteLine("** /////////////////////////////////**");
+        Console.WriteLine("** //////////////////////////////// **");
         Console.WriteLine("** WELCOME TO BOOKINGSIMULATOR 3000 **");
         Console.WriteLine("**                                  **");
         Console.WriteLine("**          Choose a number         **");
