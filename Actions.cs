@@ -1,4 +1,5 @@
 using System;
+using System.Data;
 using Npgsql;
 
 namespace holidaymaker;
@@ -95,7 +96,7 @@ public class Actions
     Console.WriteLine($"Max distance to center: {distanceToCenter}m");
 
     string query = @"
-        SELECT a.id, country, h.name, a.number_of_beds, a.price, h.distance_to_beach, h.distance_to_center
+        SELECT a.id, country, h.name, a.number_of_beds, h.rating, a.price, h.distance_to_beach, h.distance_to_center
         FROM accommodations a 
         JOIN hotels h ON h.id = a.hotel_id
         JOIN locations l ON h.location_id = l.id
@@ -107,7 +108,7 @@ public class Actions
             SELECT accommodations_id
             FROM bookings
             WHERE (start_date, end_date) OVERLAPS (@startDate, @endDate)
-        )ORDER BY a.price ASC";
+        )ORDER BY a.price ASC, h.rating DESC";
 
     await using var cmd = _db.CreateCommand(query);
     cmd.Parameters.AddWithValue("@startDate", startDate);
@@ -123,7 +124,7 @@ public class Actions
     {
         roomsFound = true;
         Console.WriteLine(
-            $"ID: {reader.GetInt64(0), -5} Country: {reader.GetString(1), -15} Hotel: {reader.GetString(2), -25} Beds: {reader.GetInt32(3), -5} Price: {reader.GetDouble(4), -10} Distance to beach (m): {reader.GetInt32(5), -15} Distance to center (m): {reader.GetInt32(6), -15}");
+            $"ID: {reader.GetInt64(0), -5} Country: {reader.GetString(1), -15} Hotel: {reader.GetString(2), -25} Beds: {reader.GetInt32(3), -5} Rating: {reader.GetDouble(4), -5} Price: {reader.GetDouble(5), -8} Distance to beach (m): {reader.GetInt32(6), -10} Distance to center (m): {reader.GetInt32(7), -10}");
     }
 
     if (!roomsFound)
@@ -203,16 +204,68 @@ public async Task AddRoomAndOptions()
         Console.WriteLine("Invalid end date format. Please try again.");
         return;
     }
+    
+    
 
+    
     Console.WriteLine("Do you want an extra bed? (yes/no): ");
-    bool extraBed = Console.ReadLine()?.ToLower() == "yes";
+    string userInput = Console.ReadLine();
+    bool extraBed;
+    
+    switch (userInput)
+    {
+        case "yes":
+            extraBed = true;
+            break;
+        case "no":
+            extraBed = false;
+            break;
+        default:
+            Console.WriteLine("Invalid input. Defaulting to no extra bed.");
+            extraBed = false;
+            break;
+    } ;
 
     Console.WriteLine("Do you want full pension? (yes/no): ");
-    bool fullBoard = Console.ReadLine()?.ToLower() == "yes";
+    string fullPensionInput = Console.ReadLine();
+    bool fullBoard;
 
-    Console.WriteLine("Do you want half pension? (yes/no): ");
-    bool halfBoard = Console.ReadLine()?.ToLower() == "yes";
+    switch (fullPensionInput)
+    {
+        case "yes":
+            fullBoard = true;
+            break;
+        case "no":
+            fullBoard = false;
+            break;
+        default:
+            Console.WriteLine("Invalid input. Defaulting to no full pension.");
+            fullBoard = false;
+            break;
+    }
 
+    bool halfBoard = false;
+    if (fullPensionInput == "no")
+    {
+        Console.WriteLine("Do you want half pension? (yes/no): ");
+        string halfBoardInput = Console.ReadLine();
+        
+        
+        switch (halfBoardInput)
+        {
+            case "yes":
+                halfBoard = true;
+                break;
+            case "no":
+                halfBoard = false;
+                break;
+            default:
+                Console.WriteLine("Invalid input. Defaulting to no full pension.");
+                halfBoard = false;
+                break;
+        }
+    }
+    
     string query = @"
         INSERT INTO bookings (customer_id, accommodations_id, start_date, end_date, extra_bed, full_board, half_board) 
         VALUES ($1, $2, $3, $4, $5, $6, $7) 
