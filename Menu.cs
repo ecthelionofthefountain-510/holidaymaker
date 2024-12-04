@@ -7,8 +7,10 @@ public class Menu
     Actions _actions;
     private int? _currentCustomerId;
     private int? _currentRoomId;
+    private int? _currentBookingId;
     private DateTime? _currentStartDate;
     private DateTime? _currentEndDate;
+    
     public Menu(Actions actions)
     {
         _actions = actions;
@@ -99,6 +101,7 @@ public class Menu
     {
         Console.WriteLine($"Aktuell kund-ID: {_currentCustomerId}");
         Console.WriteLine($"Valt rum-ID: {_currentRoomId}");
+        Console.WriteLine($"Aktuellt booknings-ID: {_currentBookingId}");
         Console.WriteLine($"Startdatum: {_currentStartDate:yyyy-MM-dd}");
         Console.WriteLine($"Slutdatum: {_currentEndDate:yyyy-MM-dd}");
     }
