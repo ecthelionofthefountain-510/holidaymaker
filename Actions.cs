@@ -133,19 +133,19 @@ public class Actions
     }
 }
 
-    public async void ShowBooking(int accommodations_id)
+    public async void ShowBooking(int bookingId)
     {
         string query =
             @" SELECT h.name, b.start_date, b.end_date, b.booking_price, b.half_board, b.full_board, b.extra_bed
         FROM bookings b 
         JOIN accommodations a ON b.accommodations_id = a.id
         JOIN hotels h ON a.hotel_id = h.id
-        WHERE a.id = @accommodations_id";
+        WHERE b.id = @bookingId";
         
         
         // Skapa och konfigurera kommandot
         await using var cmd = _db.CreateCommand(query);
-        cmd.Parameters.AddWithValue("@accommodations_id", accommodations_id); // Binda accommodationId till parameter $1
+        cmd.Parameters.AddWithValue("@bookingId", bookingId); // Binda accommodationId till parameter $1
 
         // Kör frågan och läs resultaten
         await using var reader = await cmd.ExecuteReaderAsync();
@@ -160,7 +160,7 @@ public class Actions
                 $"Hotel: {reader.GetString(0)}, " +
                 $"Start Date: {reader.GetDateTime(1).ToShortDateString()}, " +
                 $"End Date: {reader.GetDateTime(2).ToShortDateString()}, " +
-                $"Price: {reader.GetDecimal(3)}, " +
+                $"Price: {reader.GetDouble(3)}, " +
                 $"Half Board: {reader.GetBoolean(4)}, " +
                 $"Full Board: {reader.GetBoolean(5)}, " +
                 $"Extra Bed: {reader.GetBoolean(6)}");

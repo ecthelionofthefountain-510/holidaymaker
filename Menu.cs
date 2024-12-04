@@ -74,10 +74,10 @@ public class Menu
                     break;
                 case("7"):
                     Console.Clear();
-                    Console.Write("Enter Accommodation ID: ");
-                    if (int.TryParse(Console.ReadLine(), out int accommodation_id))
+                    Console.Write("Enter Booking ID: ");
+                    if (int.TryParse(Console.ReadLine(), out int booking_id))
                     { 
-                        _actions.ShowBooking(accommodation_id); // Call ShowBooking with the parsed ID
+                        _actions.ShowBooking(booking_id); // Call ShowBooking with the parsed ID
                     }
                     else
                     {
