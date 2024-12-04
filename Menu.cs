@@ -18,7 +18,7 @@ public class Menu
     private void PrintMenu()
     {
         Console.WriteLine("**************************************");
-        Console.WriteLine("**                                  **");
+        Console.WriteLine("** /////////////////////////////////**");
         Console.WriteLine("** WELCOME TO BOOKINGSIMULATOR 3000 **");
         Console.WriteLine("**                                  **");
         Console.WriteLine("**          Choose a number         **");
@@ -28,9 +28,10 @@ public class Menu
         Console.WriteLine("**       4. Update booking          **");
         Console.WriteLine("**       5. Cancel booking          **");
         Console.WriteLine("**       6. Save booking            **");
-        Console.WriteLine("**       9. Quit                    **");
-        Console.WriteLine("**       10. Show booking           **");
+        Console.WriteLine("**       9. Show booking            **");
+        Console.WriteLine("**       10. Quit                   **");
         Console.WriteLine("**                                  **");
+        Console.WriteLine("** //////////////////////////////// **");
         Console.WriteLine("**************************************");
         AskUser();
     }
@@ -72,11 +73,6 @@ public class Menu
                     break;
                 case("9"):
                     Console.Clear();
-                    Console.WriteLine("Quitting");
-                    Environment.Exit(0);
-                    break;
-                case("10"):
-                    Console.Clear();
                     Console.Write("Enter Accommodation ID: ");
                     if (int.TryParse(Console.ReadLine(), out int accommodation_id))
                     { 
@@ -86,6 +82,11 @@ public class Menu
                     {
                         Console.WriteLine("Invalid ID. Please enter a numeric value.");
                     }
+                    break;
+                case("10"):
+                    Console.Clear();
+                    Console.WriteLine("Quitting");
+                    Environment.Exit(0);
                     break;
             }
 
